@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KLIPS — Publisher Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+/* ===================================================================
+   RESET
+   =================================================================== */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{font-size:15px;scroll-behavior:smooth}
+body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:#f7f8fc;color:#1e1e2d;line-height:1.55;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+a{text-decoration:none;color:inherit}
+button{cursor:pointer;font-family:inherit;border:none;background:none}
+input,select,textarea{font-family:inherit}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:#d0d5dd;border-radius:8px}::-webkit-scrollbar-thumb:hover{background:#98a2b3}
+
+/* ===================================================================
+   TOKENS
+   =================================================================== */
+:root{
+  --brand:#6366f1;--brand-hover:#4f46e5;--brand-light:#eef2ff;--brand-50:#eef2ff;--brand-100:#e0e7ff;--brand-200:#c7d2fe;--brand-600:#4f46e5;--brand-700:#4338ca;--brand-800:#3730a3;--brand-900:#312e81;
+  --emerald:#10b981;--emerald-light:#ecfdf5;
+  --amber:#f59e0b;--amber-light:#fffbeb;
+  --rose:#ef4444;--rose-light:#fef2f2;
+  --sky:#0ea5e9;--sky-light:#f0f9ff;
+  --g25:#fcfcfd;--g50:#f9fafb;--g100:#f2f4f7;--g200:#e4e7ec;--g300:#d0d5dd;--g400:#98a2b3;--g500:#667085;--g600:#475467;--g700:#344054;--g800:#1d2939;--g900:#101828;
+  --tier-p:#8b5cf6;--tier-p-bg:#f5f3ff;--tier-pf:#3b82f6;--tier-pf-bg:#eff6ff;--tier-o:#10b981;--tier-o-bg:#ecfdf5;
+  --sidebar:#0c111d;--sidebar-border:rgba(255,255,255,.06);
+  --r-sm:8px;--r-md:10px;--r-lg:14px;--r-xl:18px;--r-full:9999px;
+  --s-xs:0 1px 2px rgba(16,24,40,.05);--s-sm:0 1px 3px rgba(16,24,40,.06),0 1px 2px rgba(16,24,40,.04);--s-md:0 4px 8px -2px rgba(16,24,40,.06),0 2px 4px -2px rgba(16,24,40,.04);--s-lg:0 12px 16px -4px rgba(16,24,40,.08),0 4px 6px -2px rgba(16,24,40,.03);--s-xl:0 20px 24px -4px rgba(16,24,40,.08),0 8px 8px -4px rgba(16,24,40,.03);
+  --ease:cubic-bezier(.4,0,.2,1);
+}
+
+/* ===================================================================
+   LOGIN
+   =================================================================== */
+.login-page{display:flex;min-height:100vh}
+.login-hero{flex:1;background:var(--brand-900);position:relative;display:flex;flex-direction:column;justify-content:flex-end;padding:64px;overflow:hidden}
+.login-hero::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cpattern id='g' width='60' height='60' patternUnits='userSpaceOnUse'%3E%3Cpath d='M60 0H0v60' fill='none' stroke='rgba(255,255,255,.03)' stroke-width='.5'/%3E%3C/pattern%3E%3C/defs%3E%3Crect fill='url(%23g)' width='60' height='60'/%3E%3C/svg%3E")}
+.login-hero .orb{position:absolute;border-radius:50%;filter:blur(80px);opacity:.35}
+.login-hero .orb1{width:500px;height:500px;background:#6366f1;top:-15%;right:-8%}
+.login-hero .orb2{width:350px;height:350px;background:#a855f7;bottom:5%;left:-5%}
+.login-hero .orb3{width:250px;height:250px;background:#06b6d4;top:40%;left:30%}
+.hero-content{position:relative;z-index:1}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);border-radius:var(--r-full);padding:6px 14px 6px 8px;font-size:12px;font-weight:500;color:rgba(255,255,255,.7);margin-bottom:28px;backdrop-filter:blur(8px)}
+.hero-badge .dot{width:6px;height:6px;background:#34d399;border-radius:50%}
+.hero-content h1{font-size:44px;font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.15;margin-bottom:16px}
+.hero-content h1 span{background:linear-gradient(135deg,#a78bfa,#38bdf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero-content p{font-size:17px;color:rgba(255,255,255,.5);max-width:440px;line-height:1.7}
+.hero-stats{display:flex;gap:48px;margin-top:48px}
+.hero-stat .val{font-size:30px;font-weight:800;color:#fff;letter-spacing:-.01em}
+.hero-stat .lbl{font-size:13px;color:rgba(255,255,255,.4);margin-top:2px}
+
+.login-panel{width:480px;background:#fff;display:flex;align-items:center;justify-content:center;padding:48px}
+.login-form{width:100%;max-width:360px}
+.login-form .logo-row{display:flex;align-items:center;gap:10px;margin-bottom:36px}
+.logo-box{width:40px;height:40px;background:var(--brand);border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:16px}
+.logo-text{font-size:20px;font-weight:800;color:var(--g900);letter-spacing:-.01em}
+.login-form h2{font-size:22px;font-weight:700;color:var(--g900);margin-bottom:6px}
+.login-form .sub{font-size:14px;color:var(--g500);margin-bottom:28px}
+
+.field{margin-bottom:18px}
+.field label{display:block;font-size:13px;font-weight:500;color:var(--g700);margin-bottom:5px}
+.field-input{width:100%;height:42px;padding:0 14px;border:1px solid var(--g300);border-radius:var(--r-md);font-size:14px;color:var(--g900);transition:all .2s var(--ease);background:#fff}
+.field-input:focus{outline:none;border-color:var(--brand);box-shadow:0 0 0 4px var(--brand-50)}
+.field-input::placeholder{color:var(--g400)}
+.field-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
+.field-row label{font-size:13px;color:var(--g600);display:flex;align-items:center;gap:6px;cursor:pointer}
+.field-row a{font-size:13px;color:var(--brand);font-weight:500}
+.field-row a:hover{color:var(--brand-hover)}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:40px;padding:0 18px;border-radius:var(--r-md);font-size:13px;font-weight:600;transition:all .15s var(--ease);border:none;white-space:nowrap}
+.btn-brand{background:var(--brand);color:#fff}.btn-brand:hover{background:var(--brand-hover);box-shadow:var(--s-sm)}
+.btn-full{width:100%}
+.btn-sm{height:34px;padding:0 12px;font-size:12px}
+.btn-xs{height:28px;padding:0 10px;font-size:11px;border-radius:6px}
+.btn-outline{background:#fff;border:1px solid var(--g300);color:var(--g700)}.btn-outline:hover{background:var(--g50);border-color:var(--g400)}
+.btn-ghost{background:transparent;color:var(--g600);padding:0 10px}.btn-ghost:hover{background:var(--g100)}
+.btn-success{background:var(--emerald);color:#fff}.btn-success:hover{background:#059669}
+.btn-rose-o{background:#fff;border:1px solid #fca5a5;color:var(--rose)}.btn-rose-o:hover{background:var(--rose-light)}
+
+.demo-sep{margin-top:32px;padding-top:24px;border-top:1px solid var(--g200)}
+.demo-sep p{font-size:11px;color:var(--g400);text-transform:uppercase;letter-spacing:1.2px;font-weight:600;margin-bottom:12px}
+.demo-btns{display:flex;gap:8px}
+
+/* ===================================================================
+   APP LAYOUT
+   =================================================================== */
+.app{display:none;min-height:100vh}.app.active{display:flex}
+
+/* SIDEBAR */
+.sidebar{width:252px;background:var(--sidebar);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:100}
+.side-head{padding:20px 18px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--sidebar-border)}
+.side-head .slogo{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0}
+.side-head .stitle{font-size:14px;font-weight:600;color:#fff}
+.side-head .sbadge{margin-left:auto;font-size:10px;padding:2px 8px;border-radius:var(--r-full);background:rgba(99,102,241,.15);color:#a5b4fc;font-weight:600}
+.side-nav{flex:1;padding:12px 0;overflow-y:auto}
+.nav-grp{padding:0 10px;margin-bottom:4px}
+.nav-grp-title{font-size:10px;text-transform:uppercase;letter-spacing:1.3px;color:rgba(255,255,255,.25);padding:10px 10px 4px;font-weight:600}
+.ni{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:var(--r-md);font-size:13px;color:rgba(255,255,255,.55);cursor:pointer;transition:all .15s var(--ease);position:relative;font-weight:450}
+.ni:hover{background:rgba(255,255,255,.05);color:rgba(255,255,255,.8)}
+.ni.on{background:rgba(99,102,241,.85);color:#fff;font-weight:500}
+.ni.on::before{content:'';position:absolute;left:-10px;top:50%;transform:translateY(-50%);width:3px;height:18px;background:#fff;border-radius:0 3px 3px 0}
+.ni i{width:18px;height:18px;flex-shrink:0}
+.ni .cnt{margin-left:auto;font-size:11px;font-weight:500;padding:1px 7px;border-radius:var(--r-full);background:rgba(255,255,255,.08);color:rgba(255,255,255,.4)}
+.side-foot{padding:14px 14px;border-top:1px solid var(--sidebar-border)}
+.s-user{display:flex;align-items:center;gap:9px;padding:7px;border-radius:var(--r-md);cursor:pointer;transition:all .15s var(--ease)}
+.s-user:hover{background:rgba(255,255,255,.05)}
+.av{width:32px;height:32px;border-radius:var(--r-full);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;color:#fff}
+.av-p{background:#8b5cf6}.av-b{background:#3b82f6}.av-g{background:#10b981}.av-r{background:#ef4444}.av-a{background:#f59e0b}
+.s-user .uname{font-size:13px;font-weight:600;color:#fff}
+.s-user .urole{font-size:11px;color:rgba(255,255,255,.35)}
+.s-user i{margin-left:auto;color:rgba(255,255,255,.25);width:16px;height:16px}
+
+/* MAIN */
+.main{flex:1;margin-left:252px;display:flex;flex-direction:column;min-height:100vh}
+.topbar{background:#fff;padding:0 28px;height:60px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--g200);position:sticky;top:0;z-index:50}
+.topbar h1{font-size:16px;font-weight:700;color:var(--g900)}
+.topbar-r{display:flex;align-items:center;gap:10px}
+.srch{display:flex;align-items:center;gap:8px;height:36px;background:var(--g50);border:1px solid transparent;border-radius:var(--r-md);padding:0 12px;width:240px;transition:all .2s var(--ease)}
+.srch:focus-within{background:#fff;border-color:var(--g300);box-shadow:var(--s-xs)}
+.srch i{color:var(--g400);width:16px;height:16px;flex-shrink:0}
+.srch input{border:none;background:none;font-size:13px;flex:1;outline:none;color:var(--g800)}
+.srch input::placeholder{color:var(--g400)}
+.noti{width:36px;height:36px;border-radius:var(--r-md);border:1px solid var(--g200);background:#fff;display:flex;align-items:center;justify-content:center;position:relative;transition:all .15s var(--ease)}
+.noti:hover{background:var(--g50)}
+.noti i{color:var(--g500);width:18px;height:18px}
+.noti-dot{position:absolute;top:7px;right:7px;width:7px;height:7px;background:var(--rose);border-radius:50%;border:1.5px solid #fff}
+
+.pg{flex:1;padding:24px 28px 40px}
+
+/* ===================================================================
+   COMPONENTS
+   =================================================================== */
+
+/* Stats */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+.stc{background:#fff;border-radius:var(--r-lg);padding:20px;border:1px solid var(--g200);transition:all .2s var(--ease)}
+.stc:hover{box-shadow:var(--s-md);border-color:var(--g100)}
+.stc-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
+.stc-lbl{font-size:13px;color:var(--g500);font-weight:500}
+.stc-ico{width:38px;height:38px;border-radius:var(--r-md);display:flex;align-items:center;justify-content:center}
+.stc-ico i{width:18px;height:18px}
+.stc-val{font-size:26px;font-weight:800;color:var(--g900);letter-spacing:-.02em}
+.stc-chg{font-size:12px;margin-top:4px;font-weight:500;display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:var(--r-full)}
+.stc-chg.up{background:var(--emerald-light);color:#059669}
+.stc-chg.down{background:var(--rose-light);color:var(--rose)}
+
+/* Card */
+.crd{background:#fff;border-radius:var(--r-lg);border:1px solid var(--g200);overflow:hidden}
+.crd-h{padding:16px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--g100)}
+.crd-h h3{font-size:14px;font-weight:600;color:var(--g900)}
+.crd-b{padding:0}
+.crd-b.pad{padding:20px}
+
+/* Tabs */
+.tabs{display:flex;gap:1px;background:var(--g100);padding:3px;border-radius:var(--r-md)}
+.tb{height:30px;padding:0 14px;border-radius:7px;font-size:12px;font-weight:500;color:var(--g500);transition:all .15s var(--ease);display:flex;align-items:center}
+.tb:hover{color:var(--g700)}.tb.on{background:#fff;color:var(--g900);box-shadow:var(--s-xs)}
+
+/* Table */
+.dt{width:100%;border-collapse:collapse}
+.dt thead{background:var(--g50)}
+.dt th{padding:10px 18px;text-align:left;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.6px;color:var(--g500);border-bottom:1px solid var(--g200)}
+.dt td{padding:12px 18px;font-size:13px;border-bottom:1px solid var(--g100);vertical-align:middle}
+.dt tbody tr{transition:background .1s}.dt tbody tr:hover{background:var(--g25)}
+.dt tbody tr:last-child td{border-bottom:none}
+.cm{font-weight:600;color:var(--g900)}.cs{font-size:12px;color:var(--g500);margin-top:1px}
+
+/* Tags */
+.tag{display:inline-flex;align-items:center;height:22px;padding:0 9px;border-radius:var(--r-full);font-size:11px;font-weight:600}
+.tag-p{background:var(--tier-p-bg);color:var(--tier-p)}.tag-pf{background:var(--tier-pf-bg);color:var(--tier-pf)}.tag-o{background:var(--tier-o-bg);color:var(--tier-o)}
+.tag-admin{background:var(--rose-light);color:var(--rose)}.tag-bc{background:var(--sky-light);color:var(--sky)}
+
+/* Status */
+.st{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:500}
+.st-dot{width:6px;height:6px;border-radius:50%}
+.st-ok .st-dot{background:var(--emerald)}.st-ok{color:var(--emerald)}
+.st-off .st-dot{background:var(--g400)}.st-off{color:var(--g400)}
+.st-pen .st-dot{background:var(--amber)}.st-pen{color:var(--amber)}
+
+/* Filters */
+.fbar{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;align-items:center}
+.fchip{height:32px;padding:0 14px;border-radius:var(--r-full);font-size:12px;font-weight:500;border:1px solid var(--g200);background:#fff;color:var(--g600);display:flex;align-items:center;cursor:pointer;transition:all .15s var(--ease)}
+.fchip:hover{border-color:var(--brand);color:var(--brand)}
+.fchip.on{background:var(--brand);color:#fff;border-color:var(--brand)}
+.fsel{height:32px;padding:0 28px 0 10px;border-radius:var(--r-md);border:1px solid var(--g200);font-size:12px;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23667085' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 8px center;cursor:pointer;-webkit-appearance:none;color:var(--g700);font-weight:500}
+
+/* Video Grid */
+.vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+.vc{background:#fff;border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--g200);transition:all .25s var(--ease);cursor:pointer}
+.vc:hover{box-shadow:var(--s-lg);transform:translateY(-4px);border-color:var(--g100)}
+.vt{position:relative;aspect-ratio:16/9;overflow:hidden;background:var(--g100)}
+.vt img{width:100%;height:100%;object-fit:cover;transition:transform .4s var(--ease)}
+.vc:hover .vt img{transform:scale(1.06)}
+.vt-ov{position:absolute;inset:0;background:rgba(0,0,0,0);transition:all .25s var(--ease);display:flex;align-items:center;justify-content:center}
+.vc:hover .vt-ov{background:rgba(0,0,0,.35)}
+.play-c{width:48px;height:48px;background:rgba(255,255,255,.95);border-radius:50%;display:flex;align-items:center;justify-content:center;opacity:0;transform:scale(.8);transition:all .25s var(--ease);box-shadow:var(--s-lg)}
+.play-c i{width:20px;height:20px;color:var(--g900);margin-left:2px}
+.vc:hover .play-c{opacity:1;transform:scale(1)}
+.vt .vbadge{position:absolute;z-index:2;font-size:10px;font-weight:600;letter-spacing:.3px;padding:3px 8px;border-radius:5px}
+.vbadge.bc{top:8px;left:8px;background:rgba(0,0,0,.6);color:#fff;backdrop-filter:blur(6px)}
+.vbadge.tr{top:8px;right:8px}
+.vbadge.dur{bottom:8px;right:8px;background:rgba(0,0,0,.7);color:#fff;font-size:11px;padding:2px 7px;border-radius:4px;font-weight:500;font-variant-numeric:tabular-nums}
+.vi{padding:14px 16px}
+.vi h3{font-size:13px;font-weight:600;line-height:1.45;color:var(--g900);margin-bottom:6px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.vm{display:flex;gap:10px;font-size:11px;color:var(--g500)}
+.vm span{display:flex;align-items:center;gap:3px}
+
+/* Pagination */
+.pagi{display:flex;justify-content:space-between;align-items:center;padding:16px 0;font-size:12px;color:var(--g500)}
+.pagi-btns{display:flex;gap:3px}
+.pg-b{min-width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:var(--r-sm);border:1px solid var(--g200);background:#fff;font-size:12px;font-weight:500;color:var(--g700);transition:all .12s}
+.pg-b:hover{background:var(--g50)}.pg-b.on{background:var(--brand);color:#fff;border-color:var(--brand)}.pg-b:disabled{opacity:.35;cursor:not-allowed}
+
+/* Banner */
+.banner{display:flex;align-items:center;gap:10px;padding:12px 16px;border-radius:var(--r-md);margin-bottom:20px;font-size:13px;font-weight:450}
+.banner i{width:18px;height:18px;flex-shrink:0}
+.banner.purple{background:var(--tier-p-bg);border:1px solid #ddd6fe;color:#5b21b6}
+.banner.blue{background:var(--tier-pf-bg);border:1px solid #bfdbfe;color:#1e40af}
+.banner.yellow{background:var(--amber-light);border:1px solid #fde68a;color:#92400e}
+
+/* Detail Panel */
+.dpan{background:#fff;border-radius:var(--r-lg);border:1px solid var(--g200);padding:22px;margin-bottom:16px}
+.dpan h3{font-size:14px;font-weight:600;margin-bottom:14px;color:var(--g900)}
+.drow{display:flex;align-items:center;padding:9px 0;border-bottom:1px solid var(--g100)}.drow:last-child{border-bottom:none}
+.dlbl{width:140px;font-size:12px;color:var(--g500);flex-shrink:0;font-weight:500}
+.dval{font-size:13px;font-weight:500;color:var(--g900)}
+
+/* Tier Cards */
+.tcards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.tc{background:#fff;border-radius:var(--r-lg);border:1px solid var(--g200);overflow:hidden;transition:all .2s var(--ease)}
+.tc:hover{box-shadow:var(--s-md)}
+.tc-accent{height:3px}
+.tc-body{padding:22px}
+.tc-body h3{font-size:17px;font-weight:700;margin-bottom:3px}
+.tc-body .td{font-size:12px;color:var(--g500);margin-bottom:14px}
+.tc-num{font-size:28px;font-weight:800;letter-spacing:-.02em;margin-bottom:16px}
+.tc-num span{font-size:13px;font-weight:400;color:var(--g500)}
+.tf{display:flex;align-items:center;gap:7px;padding:6px 0;font-size:13px;color:var(--g700)}
+.tf i{width:16px;height:16px;flex-shrink:0}
+.tf.yes i{color:var(--emerald)}.tf.no i{color:var(--g300)}
+
+/* Activity */
+.ai{display:flex;align-items:flex-start;gap:12px;padding:12px 20px;border-bottom:1px solid var(--g100);transition:background .1s}
+.ai:hover{background:var(--g25)}.ai:last-child{border-bottom:none}
+.ai-ico{width:32px;height:32px;border-radius:var(--r-md);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ai-ico i{width:14px;height:14px}
+.ai-ico.cr{background:var(--emerald-light);color:var(--emerald)}.ai-ico.ed{background:var(--brand-50);color:var(--brand)}.ai-ico.de{background:var(--rose-light);color:var(--rose)}.ai-ico.sy{background:var(--g100);color:var(--g500)}
+.ai-txt{flex:1;font-size:13px;color:var(--g600);line-height:1.5}.ai-txt strong{color:var(--g900);font-weight:600}
+.ai-tm{font-size:11px;color:var(--g400);white-space:nowrap;font-weight:450}
+
+/* Chart */
+.bars{display:flex;align-items:flex-end;gap:6px;height:170px}
+.bg{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px}
+.bv{font-size:10px;font-weight:600;color:var(--g600)}
+.br{width:100%;max-width:32px;border-radius:4px 4px 0 0;min-height:2px;cursor:pointer;transition:all .3s var(--ease);position:relative}
+.br:hover{filter:brightness(1.1)}
+.bl{font-size:10px;color:var(--g400);font-weight:500}
+
+/* Domain Row */
+.domrow{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--g50);border-radius:var(--r-md);margin-bottom:6px}
+.domrow code{font-family:'SF Mono','Fira Code',monospace;font-size:13px;font-weight:500;color:var(--g800)}
+.domrow .dsub{font-size:11px;color:var(--g400)}
+
+/* Modal */
+.mdl-bg{position:fixed;inset:0;background:rgba(10,13,20,.55);backdrop-filter:blur(5px);display:flex;align-items:center;justify-content:center;z-index:1000;opacity:0;visibility:hidden;transition:all .25s}
+.mdl-bg.vis{opacity:1;visibility:visible}
+.mdl{background:#fff;border-radius:var(--r-xl);width:90%;max-height:90vh;overflow-y:auto;box-shadow:var(--s-xl);transform:translateY(16px) scale(.98);transition:all .25s var(--ease)}
+.mdl-bg.vis .mdl{transform:translateY(0) scale(1)}
+.mdl-s{max-width:440px}.mdl-m{max-width:600px}.mdl-l{max-width:760px}
+.mdl-hd{padding:22px 24px 0;display:flex;justify-content:space-between;align-items:center}
+.mdl-hd h3{font-size:16px;font-weight:700}
+.mdl-x{width:30px;height:30px;border-radius:var(--r-md);background:var(--g100);display:flex;align-items:center;justify-content:center;transition:all .15s}
+.mdl-x:hover{background:var(--g200)}
+.mdl-x i{width:16px;height:16px;color:var(--g600)}
+.mdl-bd{padding:20px 24px 24px}
+
+/* Embed */
+.ep{background:#0a0a0f;border-radius:var(--r-md);aspect-ratio:16/9;position:relative;margin-bottom:18px;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.ep .pp{width:56px;height:56px;background:rgba(255,255,255,.9);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:var(--s-lg)}
+.ep .pp i{width:22px;height:22px;color:var(--g900);margin-left:2px}
+.em-row{display:flex;gap:6px;margin-bottom:18px;align-items:center}
+.etypes{display:flex;gap:6px;margin-bottom:18px}
+.etype{flex:1;padding:10px;border:2px solid var(--g200);border-radius:var(--r-md);text-align:center;cursor:pointer;transition:all .15s var(--ease)}
+.etype:hover{border-color:var(--g300)}
+.etype.on{border-color:var(--brand);background:var(--brand-50)}
+.etype .et-t{font-size:13px;font-weight:600;color:var(--g900)}.etype.on .et-t{color:var(--brand)}
+.etype .et-d{font-size:11px;color:var(--g500);margin-top:1px}.etype.on .et-d{color:var(--brand);opacity:.7}
+.codebox{background:var(--g900);color:#6ee7b7;border-radius:var(--r-md);padding:14px 18px;font-family:'SF Mono','Fira Code',monospace;font-size:11.5px;line-height:1.7;position:relative;margin-bottom:14px;word-break:break-all;white-space:pre-wrap}
+.codebox .cpbtn{position:absolute;top:8px;right:8px;height:26px;padding:0 10px;border-radius:6px;background:var(--brand);color:#fff;font-size:11px;font-weight:600;transition:all .15s}
+.codebox .cpbtn:hover{background:var(--brand-hover)}
+.codebox .cpbtn.ok{background:var(--emerald)}
+
+/* 2col */
+.twocol{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+
+/* Playlist row */
+.plrow{padding:16px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--g100)}
+.plrow:last-child{border-bottom:none}
+.plrow:hover{background:var(--g25)}
+.plrow .pltitle{font-weight:600;font-size:14px;color:var(--g900)}
+.plrow .plmeta{font-size:12px;color:var(--g500);margin-top:2px}
+
+/* Empty */
+.empty{text-align:center;padding:56px 20px;color:var(--g400)}
+.empty i{width:48px;height:48px;margin-bottom:14px;color:var(--g300)}
+.empty h3{font-size:15px;font-weight:600;color:var(--g600);margin-bottom:6px}
+.empty p{font-size:13px;max-width:360px;margin:0 auto 20px}
+
+/* Toast */
+.toast{position:fixed;bottom:20px;right:20px;background:var(--g900);color:#fff;padding:12px 20px;border-radius:var(--r-md);font-size:13px;font-weight:500;box-shadow:var(--s-xl);z-index:2000;transform:translateY(80px);opacity:0;transition:all .3s var(--ease);display:flex;align-items:center;gap:8px}
+.toast.vis{transform:translateY(0);opacity:1}
+.toast.ok{background:var(--emerald)}
+.toast i{width:16px;height:16px}
+
+.hidden{display:none!important}
+  </style>
+</head>
+<body>
+
+<!-- ============================================================
+     LOGIN
+     ============================================================ -->
+<div id="loginPage" class="login-page">
+  <div class="login-hero">
+    <div class="orb orb1"></div><div class="orb orb2"></div><div class="orb orb3"></div>
+    <div class="hero-content">
+      <div class="hero-badge"><span class="dot"></span> Platform ready for onboarding</div>
+      <h1>KLIPS<br><span>Publisher Portal</span></h1>
+      <p>Centralized short-form video distribution connecting Greek broadcasters with 200+ open-web publishers.</p>
+      <div class="hero-stats">
+        <div class="hero-stat"><div class="val">200+</div><div class="lbl">Publishers</div></div>
+        <div class="hero-stat"><div class="val">10K+</div><div class="lbl">Videos</div></div>
+        <div class="hero-stat"><div class="val">15M</div><div class="lbl">Monthly Plays</div></div>
+        <div class="hero-stat"><div class="val">4</div><div class="lbl">Broadcasters</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="login-panel">
+    <div class="login-form">
+      <div class="logo-row"><div class="logo-box">K</div><div class="logo-text">KLIPS</div></div>
+      <h2>Welcome back</h2>
+      <p class="sub">Sign in to your KLIPS account</p>
+      <div class="field"><label>Email address</label><input class="field-input" type="email" placeholder="you@publisher.gr" value="demo@kathimerini.gr"></div>
+      <div class="field"><label>Password</label><input class="field-input" type="password" placeholder="Enter your password" value="demopassword"></div>
+      <div class="field-row"><label><input type="checkbox" checked> Remember me</label><a href="#">Forgot password?</a></div>
+      <button class="btn btn-brand btn-full" onclick="go('publisher')">Sign in</button>
+      <div class="demo-sep">
+        <p>Quick demo access</p>
+        <div class="demo-btns">
+          <button class="btn btn-sm btn-outline" onclick="go('publisher')"><i data-lucide="layout-grid" style="width:14px;height:14px"></i> Publisher</button>
+          <button class="btn btn-sm btn-outline" onclick="go('admin')"><i data-lucide="settings" style="width:14px;height:14px"></i> Admin</button>
+          <button class="btn btn-sm btn-outline" onclick="go('broadcaster')"><i data-lucide="bar-chart-3" style="width:14px;height:14px"></i> Broadcaster</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     PUBLISHER PORTAL
+     ============================================================ -->
+<div id="publisherApp" class="app">
+  <div class="sidebar">
+    <div class="side-head"><div class="slogo" style="background:var(--brand);color:#fff">K</div><div class="stitle">KLIPS</div></div>
+    <nav class="side-nav">
+      <div class="nav-grp"><div class="nav-grp-title">Content</div>
+        <div class="ni on" onclick="pnav(this,'p-disc')"><i data-lucide="compass"></i> Discover</div>
+        <div class="ni" onclick="pnav(this,'p-play')"><i data-lucide="list-video"></i> My Playlists <span class="cnt">4</span></div>
+        <div class="ni" onclick="pnav(this,'p-emb')"><i data-lucide="code-2"></i> My Embeds <span class="cnt">128</span></div>
+      </div>
+      <div class="nav-grp"><div class="nav-grp-title">Account</div>
+        <div class="ni" onclick="pnav(this,'p-set')"><i data-lucide="settings"></i> Settings</div>
+        <div class="ni" onclick="pnav(this,'p-help')"><i data-lucide="life-buoy"></i> Support</div>
+      </div>
+    </nav>
+    <div class="side-foot"><div class="s-user" onclick="go('login')"><div class="av av-p">KA</div><div><div class="uname">Kathimerini</div><div class="urole">Premium Publisher</div></div><i data-lucide="log-out"></i></div></div>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <h1 id="pTitle">Discover Content</h1>
+      <div class="topbar-r">
+        <div class="srch"><i data-lucide="search"></i><input placeholder="Search videos..."></div>
+        <button class="noti"><i data-lucide="bell"></i><div class="noti-dot"></div></button>
+      </div>
+    </div>
+
+    <!-- DISCOVER -->
+    <div class="pg" id="p-disc">
+      <div class="banner purple"><i data-lucide="crown"></i><span><strong>Premium Access</strong> — You have access to all content across all broadcasters and tiers</span></div>
+      <div class="fbar">
+        <div class="fchip on" onclick="tchip(this)">All Content</div>
+        <div class="fchip" onclick="tchip(this)">Sports</div>
+        <div class="fchip" onclick="tchip(this)">Entertainment</div>
+        <div class="fchip" onclick="tchip(this)">News</div>
+        <div class="fchip" onclick="tchip(this)">Live Shows</div>
+        <select class="fsel"><option>All Broadcasters</option><option>ANT1</option><option>MEGA</option><option>STAR</option><option>ALPHA</option></select>
+        <select class="fsel"><option>Most Recent</option><option>Most Viewed</option><option>Trending</option></select>
+      </div>
+      <div class="vgrid" id="vGrid"></div>
+      <div class="pagi"><span>Showing 1–8 of 1,247 videos</span><div class="pagi-btns"><button class="pg-b" disabled>&laquo;</button><button class="pg-b on">1</button><button class="pg-b">2</button><button class="pg-b">3</button><button class="pg-b">...</button><button class="pg-b">156</button><button class="pg-b">&raquo;</button></div></div>
+    </div>
+
+    <!-- PLAYLISTS -->
+    <div class="pg hidden" id="p-play">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+        <div class="tabs"><button class="tb on">My Playlists</button><button class="tb">Shared With Me</button></div>
+        <button class="btn btn-sm btn-brand" onclick="toast('Playlist creation coming soon')"><i data-lucide="plus" style="width:14px;height:14px"></i> Create Playlist</button>
+      </div>
+      <div class="crd">
+        <div class="plrow"><div><div class="pltitle">Sports Highlights — October</div><div class="plmeta">24 clips · Auto-updating · Created Oct 1</div></div><div style="display:flex;gap:6px"><button class="btn btn-xs btn-outline" onclick="embedM('Sports Highlights — October','Playlist','Auto','Sports')">Get Embed</button><button class="btn btn-xs btn-ghost">Edit</button></div></div>
+        <div class="plrow"><div><div class="pltitle">Breaking News Feed</div><div class="plmeta">12 clips · Auto-updating · Created Sep 28</div></div><div style="display:flex;gap:6px"><button class="btn btn-xs btn-outline" onclick="embedM('Breaking News Feed','Playlist','Auto','News')">Get Embed</button><button class="btn btn-xs btn-ghost">Edit</button></div></div>
+        <div class="plrow"><div><div class="pltitle">Entertainment Weekly</div><div class="plmeta">18 clips · Manual · Created Sep 20</div></div><div style="display:flex;gap:6px"><button class="btn btn-xs btn-outline" onclick="embedM('Entertainment Weekly','Playlist','Manual','Entertainment')">Get Embed</button><button class="btn btn-xs btn-ghost">Edit</button></div></div>
+        <div class="plrow"><div><div class="pltitle">MEGA Top Moments</div><div class="plmeta">8 clips · Manual · Created Sep 15</div></div><div style="display:flex;gap:6px"><button class="btn btn-xs btn-outline" onclick="embedM('MEGA Top Moments','Playlist','Manual','Entertainment')">Get Embed</button><button class="btn btn-xs btn-ghost">Edit</button></div></div>
+      </div>
+    </div>
+
+    <!-- EMBEDS -->
+    <div class="pg hidden" id="p-emb">
+      <div class="stats" style="grid-template-columns:repeat(3,1fr)">
+        <div class="stc"><div class="stc-top"><div class="stc-lbl">Active Embeds</div><div class="stc-ico" style="background:var(--brand-50);color:var(--brand)"><i data-lucide="code-2"></i></div></div><div class="stc-val">128</div><div class="stc-chg up">↑ 14 this week</div></div>
+        <div class="stc"><div class="stc-top"><div class="stc-lbl">Total Views (30d)</div><div class="stc-ico" style="background:var(--emerald-light);color:var(--emerald)"><i data-lucide="eye"></i></div></div><div class="stc-val">245K</div><div class="stc-chg up">↑ 22.4%</div></div>
+        <div class="stc"><div class="stc-top"><div class="stc-lbl">Avg Watch Time</div><div class="stc-ico" style="background:var(--amber-light);color:var(--amber)"><i data-lucide="clock"></i></div></div><div class="stc-val">1:52</div><div class="stc-chg up">↑ 8s</div></div>
+      </div>
+      <div class="crd"><div class="crd-h"><h3>Active Embeds</h3><div class="tabs"><button class="tb on">All</button><button class="tb">Clips</button><button class="tb">Playlists</button></div></div><div class="crd-b"><table class="dt"><thead><tr><th>Content</th><th>Type</th><th>Broadcaster</th><th>Views</th><th>Domain</th><th>Status</th></tr></thead><tbody>
+        <tr><td class="cm">Champions League: Olympiacos vs Milan</td><td>Single</td><td>ANT1</td><td>12,400</td><td><code style="font-size:11px;color:var(--g600)">kathimerini.gr</code></td><td><span class="st st-ok"><span class="st-dot"></span>Live</span></td></tr>
+        <tr><td class="cm">Sports Highlights — October</td><td>Playlist</td><td>Mixed</td><td>34,200</td><td><code style="font-size:11px;color:var(--g600)">kathimerini.gr</code></td><td><span class="st st-ok"><span class="st-dot"></span>Live</span></td></tr>
+        <tr><td class="cm">Morning Show: PM Interview</td><td>Single</td><td>MEGA</td><td>8,200</td><td><code style="font-size:11px;color:var(--g600)">ekathimerini.com</code></td><td><span class="st st-ok"><span class="st-dot"></span>Live</span></td></tr>
+        <tr><td class="cm">PAOK Goal of the Week</td><td>Single</td><td>STAR</td><td>22,100</td><td><code style="font-size:11px;color:var(--g600)">kathimerini.gr</code></td><td><span class="st st-ok"><span class="st-dot"></span>Live</span></td></tr>
+        <tr><td style="color:var(--g400)">Eurovision Highlights 2026</td><td>Single</td><td>ANT1</td><td>—</td><td><code style="font-size:11px;color:var(--g400)">kathimerini.gr</code></td><td><span class="st st-off"><span class="st-dot"></span>Expired</span></td></tr>
+      </tbody></table></div></div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div class="pg hidden" id="p-set">
+      <div class="twocol">
+        <div><div class="dpan"><h3>Account Details</h3><div class="drow"><div class="dlbl">Publisher</div><div class="dval">Kathimerini</div></div><div class="drow"><div class="dlbl">Email</div><div class="dval">admin@kathimerini.gr</div></div><div class="drow"><div class="dlbl">Tier</div><div class="dval"><span class="tag tag-p">Premium</span></div></div><div class="drow"><div class="dlbl">Member Since</div><div class="dval">October 15, 2026</div></div><div class="drow"><div class="dlbl">Status</div><div class="dval"><span class="st st-ok"><span class="st-dot"></span>Active</span></div></div></div>
+        <div class="dpan"><h3>Security</h3><div class="drow"><div class="dlbl">Password</div><div class="dval"><button class="btn btn-xs btn-outline">Change Password</button></div></div><div class="drow"><div class="dlbl">Last Login</div><div class="dval">Today, 9:30 AM — Athens, GR</div></div></div></div>
+        <div><div class="dpan"><h3>Registered Domains</h3><p style="font-size:12px;color:var(--g500);margin-bottom:14px">Embeds only play on these domains. Contact admin to modify.</p><div class="domrow"><code>kathimerini.gr</code><span style="margin-left:auto" class="st st-ok"><span class="st-dot"></span>Verified</span></div><div class="domrow"><code>ekathimerini.com</code><span style="margin-left:auto" class="st st-ok"><span class="st-dot"></span>Verified</span></div><div class="domrow"><code>kathimerini-app.gr</code><span style="margin-left:auto" class="st st-ok"><span class="st-dot"></span>Verified</span></div></div>
+        <div class="dpan"><h3>Notifications</h3><div class="drow"><div class="dlbl">New content</div><div class="dval"><input type="checkbox" checked></div></div><div class="drow"><div class="dlbl">Weekly digest</div><div class="dval"><input type="checkbox" checked></div></div><div class="drow"><div class="dlbl">Embed issues</div><div class="dval"><input type="checkbox" checked></div></div></div></div>
+      </div>
+    </div>
+
+    <!-- SUPPORT -->
+    <div class="pg hidden" id="p-help"><div class="empty"><i data-lucide="message-circle"></i><h3>Need help?</h3><p>Contact your account administrator or TulipTech support for technical issues.</p><button class="btn btn-brand">Contact Support</button></div></div>
+  </div>
+</div>
+
+<!-- ============================================================
+     ADMIN PORTAL
+     ============================================================ -->
+<div id="adminApp" class="app">
+  <div class="sidebar">
+    <div class="side-head"><div class="slogo" style="background:var(--brand);color:#fff">K</div><div class="stitle">KLIPS</div><div class="sbadge">ADMIN</div></div>
+    <nav class="side-nav">
+      <div class="nav-grp"><div class="nav-grp-title">Management</div>
+        <div class="ni on" onclick="anav(this,'a-pub')"><i data-lucide="users"></i> Publishers <span class="cnt">214</span></div>
+        <div class="ni" onclick="anav(this,'a-dom')"><i data-lucide="globe"></i> Domains</div>
+        <div class="ni" onclick="anav(this,'a-tier')"><i data-lucide="layers"></i> Tiers</div>
+      </div>
+      <div class="nav-grp"><div class="nav-grp-title">System</div>
+        <div class="ni" onclick="anav(this,'a-act')"><i data-lucide="activity"></i> Activity Log</div>
+        <div class="ni" onclick="anav(this,'a-rbac')"><i data-lucide="shield"></i> Access Control</div>
+        <div class="ni" onclick="anav(this,'a-set')"><i data-lucide="settings"></i> Settings</div>
+      </div>
+    </nav>
+    <div class="side-foot"><div class="s-user" onclick="go('login')"><div class="av av-r">AD</div><div><div class="uname">Alex Deris</div><div class="urole">Super Admin</div></div><i data-lucide="log-out"></i></div></div>
+  </div>
+
+  <div class="main">
+    <div class="topbar"><h1 id="aTitle">Publisher Management</h1><div class="topbar-r"><div class="srch"><i data-lucide="search"></i><input placeholder="Search publishers..."></div><button class="btn btn-sm btn-brand" onclick="openM('addM')"><i data-lucide="plus" style="width:14px;height:14px"></i> Add Publisher</button></div></div>
+
+    <!-- PUBLISHERS -->
+    <div class="pg" id="a-pub">
+      <div class="stats">
+        <div class="stc"><div class="stc-top"><div class="stc-lbl">Total Publishers</div><div class="stc-ico" style="background:var(--brand-50);color:var(--brand)"><i data-lucide="users"></i></div></div><div class="stc-val">214</div><div class="stc-chg up">↑ 12 this month</div></div>
+        <div class="stc"><div class="stc-top"><div class="stc-lbl">Premium</div><div class="stc-ico" style="background:var(--tier-p-bg);color:var(--tier-p)"><i data-lucide="crown"></i></div></div><div class="stc-val">18</div><div class="stc-chg">8.4%</div></div>
+        <div class="stc"><div class="stc-top"><div class="stc-lbl">Preferred</div><div class="stc-ico" style="background:var(--tier-pf-bg);color:var(--tier-pf)"><i data-lucide="star"></i></div></div><div class="stc-val">52</div><div class="stc-chg">24.3%</div></div>
+        <div class="stc"><div class="stc-top"><div class="stc-lbl">Open Exchange</div><div class="stc-ico" style="background:var(--tier-o-bg);color:var(--tier-o)"><i data-lucide="globe"></i></div></div><div class="stc-val">144</div><div class="stc-chg">67.3%</div></div>
+      </div>
+      <div class="crd">
+        <div class="crd-h"><div class="tabs"><button class="tb on">All (214)</button><button class="tb">Premium</button><button class="tb">Preferred</button><button class="tb">Open</button></div><button class="btn btn-xs btn-outline"><i data-lucide="download" style="width:12px;height:12px"></i> Export</button></div>
+        <div class="crd-b"><table class="dt"><thead><tr><th>Publisher</th><th>Tier</th><th>Domains</th><th>Embeds</th><th>Status</th><th>Last Active</th><th></th></tr></thead><tbody id="pubTbl"></tbody></table></div>
+      </div>
+      <div class="pagi"><span>Showing 1–8 of 214</span><div class="pagi-btns"><button class="pg-b" disabled>&laquo;</button><button class="pg-b on">1</button><button class="pg-b">2</button><button class="pg-b">3</button><button class="pg-b">...</button><button class="pg-b">27</button><button class="pg-b">&raquo;</button></div></div>
+    </div>
+
+    <!-- DOMAINS -->
+    <div class="pg hidden" id="a-dom">
+      <div class="banner blue"><i data-lucide="shield-check"></i><span>Embeds are restricted to registered publisher domains only. Content cannot be re-embedded elsewhere.</span></div>
+      <div class="crd"><div class="crd-h"><h3>Registered Domains</h3><button class="btn btn-sm btn-brand" onclick="toast('Domain form coming soon')"><i data-lucide="plus" style="width:14px;height:14px"></i> Add Domain</button></div><div class="crd-b"><table class="dt"><thead><tr><th>Publisher</th><th>Domain</th><th>Subdomains</th><th>Status</th><th>Registered</th><th></th></tr></thead><tbody>
+        <tr><td class="cm">Kathimerini</td><td><code style="font-size:12px;background:var(--g100);padding:2px 7px;border-radius:4px">kathimerini.gr</code></td><td style="font-size:12px;color:var(--g500)">*.kathimerini.gr</td><td><span class="st st-ok"><span class="st-dot"></span>Verified</span></td><td>Oct 15</td><td><button class="btn btn-xs btn-outline">Edit</button></td></tr>
+        <tr><td class="cm">Kathimerini</td><td><code style="font-size:12px;background:var(--g100);padding:2px 7px;border-radius:4px">ekathimerini.com</code></td><td style="font-size:12px;color:var(--g500)">*.ekathimerini.com</td><td><span class="st st-ok"><span class="st-dot"></span>Verified</span></td><td>Oct 15</td><td><button class="btn btn-xs btn-outline">Edit</button></td></tr>
+        <tr><td class="cm">Proto Thema</td><td><code style="font-size:12px;background:var(--g100);padding:2px 7px;border-radius:4px">protothema.gr</code></td><td style="font-size:12px;color:var(--g500)">*.protothema.gr</td><td><span class="st st-ok"><span class="st-dot"></span>Verified</span></td><td>Oct 14</td><td><button class="btn btn-xs btn-outline">Edit</button></td></tr>
+        <tr><td class="cm">Newsbomb</td><td><code style="font-size:12px;background:var(--g100);padding:2px 7px;border-radius:4px">newsbomb.gr</code></td><td style="font-size:12px;color:var(--g500)">*.newsbomb.gr</td><td><span class="st st-ok"><span class="st-dot"></span>Verified</span></td><td>Oct 14</td><td><button class="btn btn-xs btn-outline">Edit</button></td></tr>
+        <tr><td class="cm">in.gr</td><td><code style="font-size:12px;background:var(--g100);padding:2px 7px;border-radius:4px">in.gr</code></td><td style="font-size:12px;color:var(--g500)">*.in.gr</td><td><span class="st st-pen"><span class="st-dot"></span>Pending</span></td><td>Oct 18</td><td><button class="btn btn-xs btn-brand">Verify</button></td></tr>
+      </tbody></table></div></div>
+    </div>
+
+    <!-- TIERS -->
+    <div class="pg hidden" id="a-tier">
+      <div class="tcards">
+        <div class="tc"><div class="tc-accent" style="background:var(--tier-p)"></div><div class="tc-body"><h3 style="color:var(--tier-p)">Premium</h3><div class="td">Top partners — full content access</div><div class="tc-num">18 <span>publishers</span></div><div class="tf yes"><i data-lucide="check"></i> All content, all broadcasters</div><div class="tf yes"><i data-lucide="check"></i> DRM-protected sports</div><div class="tf yes"><i data-lucide="check"></i> Live show clips</div><div class="tf yes"><i data-lucide="check"></i> Priority support</div></div></div>
+        <div class="tc"><div class="tc-accent" style="background:var(--tier-pf)"></div><div class="tc-body"><h3 style="color:var(--tier-pf)">Preferred</h3><div class="td">Selected partners — mid-tier access</div><div class="tc-num">52 <span>publishers</span></div><div class="tf yes"><i data-lucide="check"></i> Mid-tier content</div><div class="tf yes"><i data-lucide="check"></i> Sports highlights only</div><div class="tf yes"><i data-lucide="check"></i> Entertainment &amp; news</div><div class="tf no"><i data-lucide="x"></i> Premium sports exclusives</div></div></div>
+        <div class="tc"><div class="tc-accent" style="background:var(--tier-o)"></div><div class="tc-body"><h3 style="color:var(--tier-o)">Open Exchange</h3><div class="td">Open web — general content</div><div class="tc-num">144 <span>publishers</span></div><div class="tf yes"><i data-lucide="check"></i> General content</div><div class="tf yes"><i data-lucide="check"></i> Entertainment &amp; lifestyle</div><div class="tf no"><i data-lucide="x"></i> No DRM content</div><div class="tf no"><i data-lucide="x"></i> No sports</div></div></div>
+      </div>
+    </div>
+
+    <!-- ACTIVITY -->
+    <div class="pg hidden" id="a-act"><div class="crd"><div class="crd-h"><h3>Activity Log</h3><div class="tabs"><button class="tb on">All</button><button class="tb">Publishers</button><button class="tb">Domains</button><button class="tb">System</button></div></div><div class="crd-b" id="actL"></div></div></div>
+
+    <!-- RBAC -->
+    <div class="pg hidden" id="a-rbac">
+      <div class="banner yellow"><i data-lucide="shield"></i><strong>RBAC</strong> — Super Admin (full), Broadcaster (own content, read-only), Publisher (tiered content + embeds)</div>
+      <div class="crd"><div class="crd-h"><h3>Users &amp; Roles</h3><button class="btn btn-sm btn-brand" onclick="toast('Invite coming soon')"><i data-lucide="user-plus" style="width:14px;height:14px"></i> Invite</button></div><div class="crd-b"><table class="dt"><thead><tr><th>User</th><th>Email</th><th>Role</th><th>Scope</th><th>Last Login</th><th></th></tr></thead><tbody>
+        <tr><td class="cm">Alex Deris</td><td style="font-size:12px">alexderis16@gmail.com</td><td><span class="tag tag-admin">Super Admin</span></td><td style="font-size:12px">Full access</td><td style="font-size:12px;color:var(--g500)">2 min ago</td><td><button class="btn btn-xs btn-outline">Edit</button></td></tr>
+        <tr><td class="cm">Loretta Panou</td><td style="font-size:12px">hello@uplead.gr</td><td><span class="tag tag-admin">Super Admin</span></td><td style="font-size:12px">Full access</td><td style="font-size:12px;color:var(--g500)">1h ago</td><td><button class="btn btn-xs btn-outline">Edit</button></td></tr>
+        <tr><td class="cm">ANT1 Content Team</td><td style="font-size:12px">content@ant1.gr</td><td><span class="tag tag-bc">Broadcaster</span></td><td style="font-size:12px">ANT1 only</td><td style="font-size:12px;color:var(--g500)">3h ago</td><td><button class="btn btn-xs btn-outline">Edit</button></td></tr>
+        <tr><td class="cm">MEGA Content Team</td><td style="font-size:12px">content@mega.gr</td><td><span class="tag tag-bc">Broadcaster</span></td><td style="font-size:12px">MEGA only</td><td style="font-size:12px;color:var(--g500)">1d ago</td><td><button class="btn btn-xs btn-outline">Edit</button></td></tr>
+        <tr><td class="cm">STAR Content Team</td><td style="font-size:12px">content@star.gr</td><td><span class="tag tag-bc">Broadcaster</span></td><td style="font-size:12px">STAR only</td><td style="font-size:12px;color:var(--g500)">2d ago</td><td><button class="btn btn-xs btn-outline">Edit</button></td></tr>
+        <tr><td class="cm">ALPHA Content Team</td><td style="font-size:12px">content@alphatv.gr</td><td><span class="tag tag-bc">Broadcaster</span></td><td style="font-size:12px">ALPHA only</td><td style="font-size:12px;color:var(--g500)">5h ago</td><td><button class="btn btn-xs btn-outline">Edit</button></td></tr>
+      </tbody></table></div></div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div class="pg hidden" id="a-set">
+      <div class="twocol">
+        <div class="dpan"><h3>Platform</h3><div class="drow"><div class="dlbl">Name</div><div class="dval">KLIPS Portal</div></div><div class="drow"><div class="dlbl">Default Tier</div><div class="dval">Open Exchange</div></div><div class="drow"><div class="dlbl">Domain Check</div><div class="dval"><span class="st st-ok"><span class="st-dot"></span>Enabled</span></div></div></div>
+        <div class="dpan"><h3>JWX Integration</h3><div class="drow"><div class="dlbl">API Status</div><div class="dval"><span class="st st-ok"><span class="st-dot"></span>Connected</span></div></div><div class="drow"><div class="dlbl">Properties</div><div class="dval">4 (ANT1, MEGA, STAR, ALPHA)</div></div><div class="drow"><div class="dlbl">API Calls (24h)</div><div class="dval">12,847</div></div><div class="drow"><div class="dlbl">Cache Hit</div><div class="dval">94.2%</div></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     BROADCASTER
+     ============================================================ -->
+<div id="broadcasterApp" class="app">
+  <div class="sidebar">
+    <div class="side-head"><div class="slogo" style="background:#ef4444;color:#fff">A1</div><div class="stitle">ANT1 Reports</div></div>
+    <nav class="side-nav">
+      <div class="nav-grp"><div class="nav-grp-title">Analytics</div>
+        <div class="ni on" onclick="bnav(this,'b-ov')"><i data-lucide="bar-chart-3"></i> Overview</div>
+        <div class="ni" onclick="bnav(this,'b-pub')"><i data-lucide="users"></i> By Publisher</div>
+        <div class="ni" onclick="bnav(this,'b-con')"><i data-lucide="video"></i> By Content</div>
+      </div>
+    </nav>
+    <div class="side-foot"><div class="s-user" onclick="go('login')"><div class="av av-r">A1</div><div><div class="uname">ANT1 Content Team</div><div class="urole">Broadcaster (Read-only)</div></div><i data-lucide="log-out"></i></div></div>
+  </div>
+
+  <div class="main">
+    <div class="topbar"><h1 id="bTitle">ANT1 — Performance Overview</h1><div class="topbar-r"><select class="fsel" style="height:36px"><option>Last 7 Days</option><option selected>Last 30 Days</option><option>Last 90 Days</option></select><button class="btn btn-sm btn-outline"><i data-lucide="download" style="width:14px;height:14px"></i> Export</button></div></div>
+
+    <!-- OVERVIEW -->
+    <div class="pg" id="b-ov">
+      <div class="stats">
+        <div class="stc"><div class="stc-top"><div class="stc-lbl">Total Views</div><div class="stc-ico" style="background:var(--brand-50);color:var(--brand)"><i data-lucide="eye"></i></div></div><div class="stc-val">2.4M</div><div class="stc-chg up">↑ 18.3%</div></div>
+        <div class="stc"><div class="stc-top"><div class="stc-lbl">Active Embeds</div><div class="stc-ico" style="background:var(--emerald-light);color:var(--emerald)"><i data-lucide="code-2"></i></div></div><div class="stc-val">1,247</div><div class="stc-chg up">↑ 86</div></div>
+        <div class="stc"><div class="stc-top"><div class="stc-lbl">Publishers</div><div class="stc-ico" style="background:var(--tier-pf-bg);color:var(--tier-pf)"><i data-lucide="users"></i></div></div><div class="stc-val">142</div><div class="stc-chg up">↑ 8</div></div>
+        <div class="stc"><div class="stc-top"><div class="stc-lbl">Avg Watch Time</div><div class="stc-ico" style="background:var(--amber-light);color:var(--amber)"><i data-lucide="clock"></i></div></div><div class="stc-val">1:52</div><div class="stc-chg up">↑ 12s</div></div>
+      </div>
+      <div class="twocol" style="margin-bottom:20px">
+        <div class="crd"><div class="crd-h"><h3>Daily Views</h3></div><div class="crd-b pad"><div class="bars" id="dChart"></div></div></div>
+        <div class="crd"><div class="crd-h"><h3>By Content Type</h3></div><div class="crd-b pad"><div class="bars" id="tChart"></div></div></div>
+      </div>
+      <div class="banner yellow"><i data-lucide="eye-off"></i><strong>Data scope:</strong> Only ANT1 content is visible. Contact super admin for cross-broadcaster data.</div>
+    </div>
+
+    <!-- BY PUBLISHER -->
+    <div class="pg hidden" id="b-pub"><div class="crd"><div class="crd-h"><h3>ANT1 — By Publisher</h3><select class="fsel"><option>By Views</option><option>By Embeds</option><option>By Watch Time</option></select></div><div class="crd-b"><table class="dt"><thead><tr><th>#</th><th>Publisher</th><th>Tier</th><th>Embeds</th><th>Views (30d)</th><th>Watch Time</th><th>Top Type</th></tr></thead><tbody>
+      <tr><td>1</td><td class="cm">Kathimerini</td><td><span class="tag tag-p">Premium</span></td><td>42</td><td>385,200</td><td>2:14</td><td>Sports</td></tr>
+      <tr><td>2</td><td class="cm">Proto Thema</td><td><span class="tag tag-p">Premium</span></td><td>38</td><td>312,800</td><td>2:01</td><td>News</td></tr>
+      <tr><td>3</td><td class="cm">Newsbomb</td><td><span class="tag tag-pf">Preferred</span></td><td>24</td><td>198,400</td><td>1:48</td><td>Entertainment</td></tr>
+      <tr><td>4</td><td class="cm">iefimerida</td><td><span class="tag tag-pf">Preferred</span></td><td>18</td><td>156,000</td><td>1:42</td><td>Sports</td></tr>
+      <tr><td>5</td><td class="cm">in.gr</td><td><span class="tag tag-pf">Preferred</span></td><td>15</td><td>124,600</td><td>1:35</td><td>News</td></tr>
+      <tr><td>6</td><td class="cm">Skai.gr</td><td><span class="tag tag-o">Open</span></td><td>8</td><td>89,200</td><td>1:28</td><td>Entertainment</td></tr>
+      <tr><td>7</td><td class="cm">News247</td><td><span class="tag tag-o">Open</span></td><td>6</td><td>67,400</td><td>1:22</td><td>News</td></tr>
+    </tbody></table></div></div></div>
+
+    <!-- BY CONTENT -->
+    <div class="pg hidden" id="b-con"><div class="crd"><div class="crd-h"><h3>Top ANT1 Content</h3><div style="display:flex;gap:6px"><select class="fsel"><option>All Types</option><option>Sports</option><option>News</option></select><select class="fsel"><option>Last 30 Days</option><option>Last 7 Days</option></select></div></div><div class="crd-b"><table class="dt"><thead><tr><th>#</th><th>Content</th><th>Type</th><th>Tier</th><th>Publishers</th><th>Views</th><th>Published</th></tr></thead><tbody>
+      <tr><td>1</td><td class="cm">Champions League: Olympiacos vs Milan</td><td>Sports</td><td><span class="tag tag-p">Premium</span></td><td>34</td><td>245,000</td><td>Oct 19</td></tr>
+      <tr><td>2</td><td class="cm">Super League: Week 8 Goals</td><td>Sports</td><td><span class="tag tag-pf">Preferred</span></td><td>67</td><td>189,400</td><td>Oct 17</td></tr>
+      <tr><td>3</td><td class="cm">Athens Traffic Reform</td><td>News</td><td><span class="tag tag-pf">Preferred</span></td><td>52</td><td>142,800</td><td>Oct 20</td></tr>
+      <tr><td>4</td><td class="cm">PM Press Conference</td><td>News</td><td><span class="tag tag-o">Open</span></td><td>118</td><td>134,200</td><td>Oct 18</td></tr>
+      <tr><td>5</td><td class="cm">Storm Warning Crete</td><td>News</td><td><span class="tag tag-o">Open</span></td><td>95</td><td>98,700</td><td>Oct 16</td></tr>
+    </tbody></table></div></div></div>
+  </div>
+</div>
+
+<!-- ============================================================
+     MODALS
+     ============================================================ -->
+<div class="mdl-bg" id="embM" onclick="closeM('embM',event)"><div class="modal mdl mdl-m" onclick="event.stopPropagation()">
+  <div class="mdl-hd"><h3 id="emTitle">Video</h3><button class="mdl-x" onclick="closeM('embM')"><i data-lucide="x"></i></button></div>
+  <div class="mdl-bd">
+    <div class="ep"><div class="pp"><i data-lucide="play"></i></div></div>
+    <div class="em-row"><span id="emBc" class="vbadge bc" style="position:static">ANT1</span><span id="emCat" style="font-size:12px;color:var(--g500)">Sports</span><span id="emDur" style="font-size:12px;color:var(--g500)">3:24</span></div>
+    <div style="font-size:13px;font-weight:600;margin-bottom:8px">Embed Type</div>
+    <div class="etypes">
+      <div class="etype on" onclick="selET(this)"><div class="et-t">Single Clip</div><div class="et-d">One video</div></div>
+      <div class="etype" onclick="selET(this)"><div class="et-t">Playlist</div><div class="et-d">Auto-updating</div></div>
+      <div class="etype" onclick="selET(this)"><div class="et-t">Responsive</div><div class="et-d">Fluid width</div></div>
+    </div>
+    <div style="font-size:13px;font-weight:600;margin-bottom:8px">Embed Code</div>
+    <div class="codebox"><button class="cpbtn" onclick="cpCode(this)">Copy</button>&lt;script src="https://cdn.jwplayer.com/libraries/xyz123.js"&gt;&lt;/script&gt;
+&lt;div id="player-Ab3Kx9"&gt;&lt;/div&gt;
+&lt;script&gt;
+  jwplayer("player-Ab3Kx9").setup({
+    playlist: "https://cdn.jwplayer.com/v2/media/Ab3Kx9",
+    width: "100%",
+    aspectratio: "16:9"
+  });
+&lt;/script&gt;</div>
+    <div style="display:flex;gap:10px"><button class="btn btn-brand" style="flex:1" onclick="cpCode(document.querySelector('.cpbtn'))"><i data-lucide="copy" style="width:14px;height:14px"></i> Copy Embed Code</button><button class="btn btn-outline" style="flex:1"><i data-lucide="download" style="width:14px;height:14px"></i> Download HTML</button></div>
+  </div>
+</div></div>
+
+<div class="mdl-bg" id="addM" onclick="closeM('addM',event)"><div class="modal mdl mdl-s" onclick="event.stopPropagation()">
+  <div class="mdl-hd"><h3>Add Publisher</h3><button class="mdl-x" onclick="closeM('addM')"><i data-lucide="x"></i></button></div>
+  <div class="mdl-bd">
+    <div class="field"><label>Publisher Name</label><input class="field-input" placeholder="e.g. Kathimerini"></div>
+    <div class="field"><label>Contact Email</label><input class="field-input" type="email" placeholder="admin@publisher.gr"></div>
+    <div class="field"><label>Primary Domain</label><input class="field-input" placeholder="publisher.gr"></div>
+    <div class="field"><label>Assign Tier</label><select class="field-input" style="cursor:pointer;height:42px"><option>Open Exchange</option><option>Preferred</option><option>Premium</option></select></div>
+    <div style="display:flex;gap:10px;margin-top:4px"><button class="btn btn-brand" style="flex:1" onclick="closeM('addM');toast('Publisher created successfully','ok')">Create Publisher</button><button class="btn btn-outline" style="flex:1" onclick="closeM('addM')">Cancel</button></div>
+  </div>
+</div></div>
+
+<div class="mdl-bg" id="detM" onclick="closeM('detM',event)"><div class="modal mdl mdl-m" onclick="event.stopPropagation()">
+  <div class="mdl-hd"><h3 id="detName">Publisher</h3><button class="mdl-x" onclick="closeM('detM')"><i data-lucide="x"></i></button></div>
+  <div class="mdl-bd">
+    <div class="tabs" style="margin-bottom:18px"><button class="tb on" onclick="dtab(this,'di')">Details</button><button class="tb" onclick="dtab(this,'dd')">Domains</button><button class="tb" onclick="dtab(this,'de')">Embeds</button></div>
+    <div id="di"><div class="drow"><div class="dlbl">Status</div><div class="dval"><span class="st st-ok"><span class="st-dot"></span>Active</span></div></div><div class="drow"><div class="dlbl">Tier</div><div class="dval"><select class="fsel" style="height:32px"><option>Premium</option><option>Preferred</option><option>Open Exchange</option></select></div></div><div class="drow"><div class="dlbl">Active Embeds</div><div class="dval">128</div></div><div class="drow"><div class="dlbl">Monthly Views</div><div class="dval">245,000</div></div><div class="drow"><div class="dlbl">Joined</div><div class="dval">Oct 15, 2026</div></div></div>
+    <div id="dd" class="hidden"><div class="domrow"><code>kathimerini.gr</code><span class="dsub" style="margin-left:6px">*.kathimerini.gr</span><span style="margin-left:auto" class="st st-ok"><span class="st-dot"></span>Verified</span></div><div class="domrow"><code>ekathimerini.com</code><span class="dsub" style="margin-left:6px">*.ekathimerini.com</span><span style="margin-left:auto" class="st st-ok"><span class="st-dot"></span>Verified</span></div><div class="domrow"><code>kathimerini-app.gr</code><span style="margin-left:auto" class="st st-ok"><span class="st-dot"></span>Verified</span></div><button class="btn btn-xs btn-outline" style="margin-top:12px"><i data-lucide="plus" style="width:12px;height:12px"></i> Add Domain</button></div>
+    <div id="de" class="hidden"><div style="font-size:13px;color:var(--g500);margin-bottom:12px">128 active embeds across 3 domains</div><div style="display:flex;gap:12px"><div class="stc" style="flex:1"><div class="stc-lbl">kathimerini.gr</div><div class="stc-val" style="font-size:18px">86</div></div><div class="stc" style="flex:1"><div class="stc-lbl">ekathimerini.com</div><div class="stc-val" style="font-size:18px">34</div></div><div class="stc" style="flex:1"><div class="stc-lbl">kathimerini-app.gr</div><div class="stc-val" style="font-size:18px">8</div></div></div></div>
+    <div style="display:flex;gap:10px;margin-top:22px;padding-top:18px;border-top:1px solid var(--g100)"><button class="btn btn-brand btn-sm" style="flex:1" onclick="closeM('detM');toast('Changes saved','ok')">Save Changes</button><button class="btn btn-sm btn-outline">Send Invite</button><button class="btn btn-sm btn-rose-o">Revoke</button></div>
+  </div>
+</div></div>
+
+<div class="toast" id="toastEl"></div>
+
+<!-- ============================================================
+     JS
+     ============================================================ -->
+<script>
+const VD=[
+  {t:"Champions League Highlights: Olympiacos vs Milan",b:"ANT1",tr:"Premium",c:"Sports",d:"3:24",v:"12.4K",tm:"2h ago",img:"https://images.unsplash.com/photo-1522778119026-d647f0596c20?w=600&h=340&fit=crop"},
+  {t:"Morning Show: Interview with PM Mitsotakis",b:"MEGA",tr:"Premium",c:"News",d:"4:12",v:"8.2K",tm:"5h ago",img:"https://images.unsplash.com/photo-1495020689067-958852a7765e?w=600&h=340&fit=crop"},
+  {t:"Super League: PAOK Goal of the Week",b:"STAR",tr:"Preferred",c:"Sports",d:"1:48",v:"22.1K",tm:"1d ago",img:"https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=600&h=340&fit=crop"},
+  {t:"Celebrity Dance Competition — Episode 14",b:"ALPHA",tr:"Open",c:"Entertainment",d:"3:05",v:"45.3K",tm:"3h ago",img:"https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=340&fit=crop"},
+  {t:"Breaking: Athens Traffic Reform",b:"ANT1",tr:"Preferred",c:"News",d:"2:30",v:"5.7K",tm:"6h ago",img:"https://images.unsplash.com/photo-1524661135-423995f22d0b?w=600&h=340&fit=crop"},
+  {t:"Masterchef Greece: Top 5 Moments",b:"STAR",tr:"Open",c:"Entertainment",d:"2:55",v:"31.8K",tm:"12h ago",img:"https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&h=340&fit=crop"},
+  {t:"Euroleague: Panathinaikos Buzzer Beater",b:"MEGA",tr:"Premium",c:"Sports",d:"1:22",v:"18.9K",tm:"8h ago",img:"https://images.unsplash.com/photo-1546519638-68e109498ffc?w=600&h=340&fit=crop"},
+  {t:"The Voice Greece: Best Auditions Week 6",b:"ALPHA",tr:"Preferred",c:"Live Shows",d:"3:40",v:"67.2K",tm:"1d ago",img:"https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=600&h=340&fit=crop"},
+];
+const PB=[
+  {n:"Kathimerini",dm:"kathimerini.gr",tr:"Premium",ds:3,em:128,st:"active",la:"2 min ago"},
+  {n:"Proto Thema",dm:"protothema.gr",tr:"Premium",ds:5,em:94,st:"active",la:"15 min ago"},
+  {n:"Newsbomb",dm:"newsbomb.gr",tr:"Preferred",ds:2,em:67,st:"active",la:"1h ago"},
+  {n:"in.gr",dm:"in.gr",tr:"Preferred",ds:1,em:45,st:"active",la:"3h ago"},
+  {n:"iefimerida",dm:"iefimerida.gr",tr:"Preferred",ds:2,em:38,st:"active",la:"5h ago"},
+  {n:"Skai.gr",dm:"skai.gr",tr:"Open",ds:1,em:22,st:"active",la:"1d ago"},
+  {n:"News247",dm:"news247.gr",tr:"Open",ds:1,em:15,st:"active",la:"2d ago"},
+  {n:"HuffPost GR",dm:"huffingtonpost.gr",tr:"Open",ds:1,em:8,st:"inactive",la:"14d ago"},
+];
+const ACT=[
+  {ty:"cr",tx:'<strong>Alex Deris</strong> created publisher <strong>LifoMedia</strong> → Open Exchange',tm:"Today, 10:24 AM"},
+  {ty:"ed",tx:'<strong>Alex Deris</strong> changed <strong>Newsbomb</strong> tier → <strong>Preferred</strong>',tm:"Today, 09:15 AM"},
+  {ty:"cr",tx:'<strong>Alex Deris</strong> added domain <strong>in.gr</strong> for <strong>in.gr</strong>',tm:"Yesterday, 4:30 PM"},
+  {ty:"ed",tx:'<strong>Alex Deris</strong> enabled override for <strong>Proto Thema</strong>: Premium sports',tm:"Yesterday, 2:12 PM"},
+  {ty:"de",tx:'<strong>Alex Deris</strong> revoked access for <strong>OldSite.gr</strong>',tm:"Yesterday, 11 AM"},
+  {ty:"cr",tx:'<strong>Alex Deris</strong> bulk imported <strong>12 publishers</strong> → Open Exchange',tm:"Oct 18, 3:45 PM"},
+  {ty:"ed",tx:'<strong>Alex Deris</strong> added domain <strong>kathimerini-app.gr</strong> for Kathimerini',tm:"Oct 16, 10:20 AM"},
+  {ty:"sy",tx:'<strong>System</strong> migration batch 1: <strong>48 publishers</strong> onboarded',tm:"Oct 15, 9:00 AM"},
+  {ty:"sy",tx:'<strong>System</strong> JWX API verified — 4 properties connected',tm:"Oct 15, 8:30 AM"},
+];
+
+function go(p){document.getElementById('loginPage').style.display='none';document.querySelectorAll('.app').forEach(a=>a.classList.remove('active'));if(p==='login'){document.getElementById('loginPage').style.display='flex'}else{document.getElementById(p+'App').classList.add('active')}lucide.createIcons()}
+function pnav(el,id){document.querySelectorAll('#publisherApp .ni').forEach(i=>i.classList.remove('on'));el.classList.add('on');document.querySelectorAll('#publisherApp .pg').forEach(p=>p.classList.add('hidden'));document.getElementById(id).classList.remove('hidden');const T={['p-disc']:'Discover Content',['p-play']:'My Playlists',['p-emb']:'My Embeds',['p-set']:'Account Settings',['p-help']:'Support'};document.getElementById('pTitle').textContent=T[id]||''}
+function anav(el,id){document.querySelectorAll('#adminApp .ni').forEach(i=>i.classList.remove('on'));el.classList.add('on');document.querySelectorAll('#adminApp .pg').forEach(p=>p.classList.add('hidden'));document.getElementById(id).classList.remove('hidden');const T={['a-pub']:'Publisher Management',['a-dom']:'Domain Whitelisting',['a-tier']:'Tier Configuration',['a-act']:'Activity Log',['a-rbac']:'Access Control',['a-set']:'Platform Settings'};document.getElementById('aTitle').textContent=T[id]||''}
+function bnav(el,id){document.querySelectorAll('#broadcasterApp .ni').forEach(i=>i.classList.remove('on'));el.classList.add('on');document.querySelectorAll('#broadcasterApp .pg').forEach(p=>p.classList.add('hidden'));document.getElementById(id).classList.remove('hidden');const T={['b-ov']:'ANT1 — Performance Overview',['b-pub']:'ANT1 — By Publisher',['b-con']:'ANT1 — By Content'};document.getElementById('bTitle').textContent=T[id]||''}
+
+function renderV(){document.getElementById('vGrid').innerHTML=VD.map(v=>{const tc=v.tr==='Premium'?'tag-p':v.tr==='Preferred'?'tag-pf':'tag-o';return`<div class="vc" onclick="embedM('${v.t.replace(/'/g,"\\'")}','${v.b}','${v.d}','${v.c}')"><div class="vt"><img src="${v.img}" alt="" loading="lazy"><div class="vt-ov"><div class="play-c"><i data-lucide="play"></i></div></div><span class="vbadge bc">${v.b}</span><span class="vbadge tr tag ${tc}">${v.tr}</span><span class="vbadge dur">${v.d}</span></div><div class="vi"><h3>${v.t}</h3><div class="vm"><span>${v.c}</span><span>${v.tm}</span><span>${v.v} views</span></div></div></div>`}).join('')}
+function renderP(){document.getElementById('pubTbl').innerHTML=PB.map(p=>{const tc=p.tr==='Premium'?'tag-p':p.tr==='Preferred'?'tag-pf':'tag-o';const tl=p.tr==='Open'?'Open Exchange':p.tr;const sc=p.st==='active'?'st-ok':'st-off';const sl=p.st==='active'?'Active':'Inactive';return`<tr><td><div class="cm">${p.n}</div><div class="cs">${p.dm}</div></td><td><span class="tag ${tc}">${tl}</span></td><td>${p.ds}</td><td>${p.em}</td><td><span class="st ${sc}"><span class="st-dot"></span>${sl}</span></td><td style="font-size:12px;color:var(--g500)">${p.la}</td><td><button class="btn btn-xs btn-outline" onclick="detPub('${p.n.replace(/'/g,"\\'")}')">Manage</button></td></tr>`}).join('')}
+function renderA(){document.getElementById('actL').innerHTML=ACT.map(a=>{const ic={cr:'plus',ed:'pencil',de:'trash-2',sy:'server'}[a.ty]||'info';return`<div class="ai"><div class="ai-ico ${a.ty}"><i data-lucide="${ic}"></i></div><div class="ai-txt">${a.tx}</div><div class="ai-tm">${a.tm}</div></div>`}).join('')}
+function renderC(){const dd=[68,72,85,91,100,78,65,82,88,95,110,92,87,74],dl=['Oct 8','9','10','11','12','13','14','15','16','17','18','19','20','21'],mx=Math.max(...dd);document.getElementById('dChart').innerHTML=dd.map((v,i)=>`<div class="bg"><div class="bv">${v}K</div><div class="br" style="height:${v/mx*100}%;background:var(--brand)"></div><div class="bl">${dl[i]}</div></div>`).join('');const td=[{l:'Sports',v:980,c:'#8b5cf6'},{l:'News',v:620,c:'#3b82f6'},{l:'Entertain.',v:510,c:'#10b981'},{l:'Live',v:290,c:'#f59e0b'}],tmx=Math.max(...td.map(d=>d.v));document.getElementById('tChart').innerHTML=td.map(d=>`<div class="bg"><div class="bv">${d.v}K</div><div class="br" style="height:${d.v/tmx*100}%;background:${d.c}"></div><div class="bl">${d.l}</div></div>`).join('')}
+
+function openM(id){document.getElementById(id).classList.add('vis')}
+function closeM(id,e){if(!e||e.target===e.currentTarget)document.getElementById(id).classList.remove('vis')}
+function embedM(t,b,d,c){document.getElementById('emTitle').textContent=t;document.getElementById('emBc').textContent=b;document.getElementById('emCat').textContent=c;document.getElementById('emDur').textContent=d;openM('embM')}
+function detPub(n){document.getElementById('detName').textContent=n;openM('detM')}
+function selET(el){document.querySelectorAll('.etype').forEach(e=>e.classList.remove('on'));el.classList.add('on')}
+function cpCode(b){b.textContent='Copied!';b.classList.add('ok');toast('Embed code copied','ok');setTimeout(()=>{b.textContent='Copy';b.classList.remove('ok')},2000)}
+function dtab(el,id){el.parentElement.querySelectorAll('.tb').forEach(t=>t.classList.remove('on'));el.classList.add('on');['di','dd','de'].forEach(i=>document.getElementById(i).classList.toggle('hidden',i!==id))}
+function tchip(el){if(el.textContent==='All Content')return;el.classList.toggle('on')}
+function toast(msg,type){const t=document.getElementById('toastEl');t.innerHTML=(type==='ok'?'<i data-lucide="check-circle"></i>':'')+msg;t.className='toast'+(type?' '+type:'');lucide.createIcons({node:t});requestAnimationFrame(()=>t.classList.add('vis'));setTimeout(()=>t.classList.remove('vis'),3000)}
+
+document.addEventListener('DOMContentLoaded',()=>{renderV();renderP();renderA();renderC();lucide.createIcons()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.mdl-bg.vis').forEach(m=>m.classList.remove('vis'))});
+</script>
+</body>
+</html>
