@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLIPS — Project Plan | TulipTech</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html{font-size:15px}
+body{font-family:'Inter',system-ui,sans-serif;background:#fff;color:#19253F;line-height:1.6;-webkit-font-smoothing:antialiased}
+:root{
+  --navy:#19253F;--navy-900:#0d1627;--navy-800:#19253F;--navy-700:#243352;--navy-600:#304166;--navy-100:#e8ecf2;--navy-50:#f4f6f9;
+  --cyan:#7DE3EC;--cyan-dark:#5cc8d2;--cyan-light:#d4f6f9;--cyan-50:#eefbfc;
+  --text:#19253F;--text-2:#5a6a80;--text-3:#8695a8;
+  --border:#e2e8f0;--bg-s:#f7f9fc;
+  --r:12px;--r-sm:8px;
+}
+.page{max-width:100%;padding:0 48px 64px}
+
+/* ===== COVER ===== */
+.cover{background:var(--navy-900);color:#fff;padding:64px 48px 56px;margin:0 -48px 0;position:relative;overflow:hidden}
+.cover::before{content:'';position:absolute;top:-40%;right:-12%;width:550px;height:550px;background:radial-gradient(circle,rgba(125,227,236,.12) 0%,transparent 70%);border-radius:50%}
+.cover::after{content:'';position:absolute;bottom:-25%;left:-8%;width:380px;height:380px;background:radial-gradient(circle,rgba(125,227,236,.06) 0%,transparent 70%);border-radius:50%}
+.cv-logo{display:flex;align-items:center;gap:10px;margin-bottom:44px;position:relative;z-index:1}
+.cv-logo .lm{width:34px;height:34px;background:var(--cyan);border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;color:var(--navy-900)}
+.cv-logo .ln{font-size:14px;font-weight:600;color:rgba(255,255,255,.6);letter-spacing:.5px}
+.cv-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(125,227,236,.1);border:1px solid rgba(125,227,236,.2);border-radius:20px;padding:5px 16px 5px 10px;font-size:11px;font-weight:500;color:var(--cyan);margin-bottom:24px;position:relative;z-index:1}
+.cv-badge .dot{width:7px;height:7px;background:var(--cyan);border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.cover h1{font-size:38px;font-weight:800;letter-spacing:-.03em;line-height:1.15;margin-bottom:14px;position:relative;z-index:1}
+.cover h1 span{color:var(--cyan)}
+.cover .cv-sub{font-size:16px;color:rgba(255,255,255,.4);max-width:600px;position:relative;z-index:1;line-height:1.7}
+.cv-meta{display:flex;gap:40px;margin-top:40px;position:relative;z-index:1;padding-top:28px;border-top:1px solid rgba(255,255,255,.08)}
+.cv-meta div{font-size:12px;color:rgba(255,255,255,.3)}
+.cv-meta strong{display:block;font-size:14px;color:#fff;font-weight:600;margin-bottom:1px}
+
+/* ===== TOC ===== */
+.toc{background:var(--bg-s);border:1px solid var(--border);border-radius:var(--r);padding:28px 32px;margin:32px 0 48px;display:grid;grid-template-columns:1fr 1fr;gap:6px 40px}
+.toc-title{grid-column:1/-1;font-size:13px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.toc a{display:flex;align-items:center;gap:10px;padding:7px 0;font-size:14px;color:var(--text-2);text-decoration:none;border-bottom:1px solid var(--border);transition:color .15s}
+.toc a:hover{color:var(--navy)}
+.toc a .num{width:26px;height:26px;background:var(--navy);color:#fff;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
+
+/* ===== TYPOGRAPHY ===== */
+h2{font-size:20px;font-weight:800;color:var(--navy);margin:56px 0 20px;padding-bottom:14px;border-bottom:2px solid var(--navy-100);letter-spacing:-.01em;display:flex;align-items:center;gap:10px}
+h2 .sn{background:var(--navy);color:#fff;font-size:11px;font-weight:700;width:28px;height:28px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+h3{font-size:15px;font-weight:700;color:var(--navy-700);margin:28px 0 12px}
+p{font-size:14px;color:var(--text-2);margin-bottom:14px}
+strong{color:var(--navy)}
+ol,ul{margin:0 0 16px 24px;font-size:14px;color:var(--text-2)}
+li{margin-bottom:6px}
+
+/* ===== TABLES ===== */
+table{width:100%;border-collapse:separate;border-spacing:0;margin:0 0 24px;font-size:13px;border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+thead{background:var(--navy-50)}
+th{padding:11px 16px;text-align:left;font-weight:600;color:var(--text-3);border-bottom:2px solid var(--navy-100);font-size:11px;text-transform:uppercase;letter-spacing:.6px}
+td{padding:11px 16px;border-bottom:1px solid #f1f5f9;color:var(--text-2);vertical-align:top}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover{background:var(--bg-s)}
+td:first-child{font-weight:500;color:var(--navy)}
+.ov td:first-child{width:130px;color:var(--text-3);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.4px}
+.ov td:last-child{font-weight:500;color:var(--navy)}
+
+/* ===== GANTT CHART ===== */
+.gantt{margin:24px 0 32px;border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+.gantt-head{display:grid;grid-template-columns:180px repeat(8,1fr);background:var(--navy);color:#fff;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+.gantt-head div{padding:10px 8px;text-align:center;border-right:1px solid rgba(255,255,255,.08)}
+.gantt-head div:first-child{text-align:left;padding-left:16px;border-right:1px solid rgba(255,255,255,.15)}
+.gantt-row{display:grid;grid-template-columns:180px repeat(8,1fr);border-bottom:1px solid var(--border);font-size:12px;align-items:center;min-height:44px}
+.gantt-row:last-child{border-bottom:none}
+.gantt-row:nth-child(odd){background:var(--bg-s)}
+.gantt-label{padding:10px 16px;font-weight:600;color:var(--navy);font-size:13px;border-right:1px solid var(--border)}
+.gantt-cell{padding:4px 3px;position:relative}
+.gantt-bar{border-radius:5px;padding:4px 8px;font-size:10px;font-weight:600;color:#fff;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gb-disc{background:var(--navy-600)}.gb-pub{background:#6366f1}.gb-admin{background:#8b5cf6}.gb-report{background:var(--cyan-dark);color:var(--navy)}.gb-qa{background:#f59e0b;color:var(--navy)}.gb-live{background:#10b981}
+.gantt-milestone{position:relative;display:flex;align-items:center;justify-content:center}
+.gantt-milestone::after{content:'';width:12px;height:12px;background:var(--navy);border:2px solid var(--cyan);border-radius:2px;transform:rotate(45deg)}
+
+/* ===== PHASE CARDS ===== */
+.phase-card{background:var(--bg-s);border:1px solid var(--border);border-radius:var(--r);margin:20px 0;overflow:hidden}
+.phase-top{background:var(--navy);color:#fff;padding:14px 20px;display:flex;align-items:center;gap:12px}
+.phase-top .pn{background:rgba(125,227,236,.15);color:var(--cyan);padding:4px 12px;border-radius:6px;font-size:12px;font-weight:700}
+.phase-top .pt{font-size:15px;font-weight:700;flex:1}
+.phase-top .pw{font-size:13px;color:var(--cyan);font-weight:500}
+.phase-body{padding:20px}
+.phase-body p{margin-bottom:10px}
+.phase-deliverables{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.phase-del{display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--text-2);padding:8px 12px;background:#fff;border-radius:var(--r-sm);border:1px solid var(--border)}
+.phase-del .check{color:var(--cyan-dark);font-weight:700;flex-shrink:0;font-size:14px}
+.phase-exit{margin-top:14px;padding:10px 16px;background:var(--cyan-50);border-left:3px solid var(--cyan);border-radius:0 var(--r-sm) var(--r-sm) 0;font-size:13px;color:var(--navy-700)}
+
+/* ===== CALLOUT ===== */
+.callout{padding:12px 18px;margin:10px 0 20px;font-size:13px;border-radius:0 var(--r-sm) var(--r-sm) 0;display:flex;align-items:flex-start;gap:10px}
+.callout .ci{font-size:16px;flex-shrink:0;margin-top:1px}
+.c-info{background:var(--cyan-50);border-left:3px solid var(--cyan-dark);color:var(--navy-700)}
+.c-warn{background:#fffbeb;border-left:3px solid #f59e0b;color:#92400e}
+
+/* ===== RACI ===== */
+.raci th{font-size:11px;padding:10px 10px;text-align:center}
+.raci td{text-align:center;font-size:13px;font-weight:600;padding:10px 10px}
+.raci td:first-child{text-align:left;font-weight:500;font-size:13px;padding-left:16px}
+.rr{color:var(--navy);background:var(--cyan-50)}.ra{color:#dc2626;background:#fef2f2}
+.rc{color:var(--navy-600);background:var(--navy-50)}.ri{color:var(--text-3)}
+
+/* ===== RISK TABLE ===== */
+.rsk-d{background:#fef2f2}.rsk-d td:nth-child(2){color:#991b1b;font-weight:600}
+.rsk-r{background:#fff7ed}.rsk-r td:nth-child(2){color:#9a3412;font-weight:600}
+
+/* ===== HOW WE WORK — visual cards ===== */
+.hw-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:20px 0 28px}
+.hw-card{background:var(--bg-s);border:1px solid var(--border);border-radius:var(--r);padding:24px;text-align:center;transition:box-shadow .2s}
+.hw-card:hover{box-shadow:0 4px 12px rgba(0,0,0,.06)}
+.hw-card .hw-ico{width:48px;height:48px;background:var(--navy);color:var(--cyan);border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:22px;margin:0 auto 14px}
+.hw-card h4{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:6px}
+.hw-card p{font-size:12px;color:var(--text-2);margin:0;line-height:1.5}
+
+/* ===== MILESTONE TIMELINE (visual) ===== */
+.ms-timeline{display:flex;gap:0;margin:24px 0 32px;position:relative}
+.ms-timeline::before{content:'';position:absolute;top:28px;left:0;right:0;height:3px;background:var(--navy-100)}
+.ms-item{flex:1;text-align:center;position:relative}
+.ms-dot{width:16px;height:16px;background:var(--navy);border:3px solid var(--cyan);border-radius:50%;margin:20px auto 12px;position:relative;z-index:1}
+.ms-item.done .ms-dot{background:var(--cyan)}
+.ms-wk{font-size:11px;font-weight:700;color:var(--cyan-dark);margin-bottom:4px}
+.ms-name{font-size:12px;font-weight:600;color:var(--navy);line-height:1.3}
+.ms-desc{font-size:11px;color:var(--text-3);margin-top:3px;line-height:1.3}
+
+/* ===== FOOTER ===== */
+.footer{margin-top:56px;padding-top:24px;border-top:2px solid var(--navy-100);display:flex;justify-content:space-between;align-items:center}
+.ft-l{display:flex;align-items:center;gap:10px}
+.ft-logo{width:28px;height:28px;background:var(--navy);border-radius:6px;display:flex;align-items:center;justify-content:center;color:var(--cyan);font-weight:800;font-size:11px}
+.ft-t{font-size:12px;color:var(--text-3)}
+.ft-r{font-size:11px;color:var(--text-3);text-align:right}
+
+/* ===== PAGE NUMBERS (print) ===== */
+@media print{
+  body{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .page{padding:0 28px 40px}
+  .cover{margin:0 -28px 24px;padding:40px 28px 32px}
+  .cover,.phase-top,.gantt-head,.hw-card .hw-ico,.ms-dot,.sn,.cv-badge,.callout,.phase-exit,.rr,.ra,.rc,.rsk-d,.rsk-r,.gantt-bar{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  h2{page-break-after:avoid}
+  .phase-card,.gantt{page-break-inside:avoid}
+  @page{margin:0.6in;@bottom-center{content:counter(page)" of "counter(pages);font-size:10px;color:#999}}
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- ===== COVER ===== -->
+<div class="cover">
+  <div class="cv-logo"><div class="lm">T</div><div class="ln">TULIPTECH</div></div>
+  <div class="cv-badge"><span class="dot"></span> Project Delivery Plan</div>
+  <h1>KLIPS <span>Publisher Portal</span></h1>
+  <p class="cv-sub">Delivery plan for an 8-week build connecting 4 Greek broadcasters with 200+ open-web publishers through a tiered video distribution platform on JWX.</p>
+  <div class="cv-meta">
+    <div><strong>Prepared by</strong>TulipTech Ltd</div>
+    <div><strong>Date</strong>October 23, 2026</div>
+    <div><strong>Version</strong>1.0</div>
+    <div><strong>Classification</strong>Confidential</div>
+  </div>
+</div>
+
+<!-- ===== TABLE OF CONTENTS ===== -->
+<div class="toc">
+  <div class="toc-title">Contents</div>
+  <a href="#s1"><span class="num">1</span> Project Overview</a>
+  <a href="#s5"><span class="num">5</span> How We Work</a>
+  <a href="#s2"><span class="num">2</span> Delivery Phases</a>
+  <a href="#s6"><span class="num">6</span> Dependencies & Risks</a>
+  <a href="#s3"><span class="num">3</span> Timeline</a>
+  <a href="#s7"><span class="num">7</span> Governance & RACI</a>
+  <a href="#s4"><span class="num">4</span> Milestones</a>
+  <a href="#s8"><span class="num">8</span> What We Need From You</a>
+</div>
+
+<!-- ===== 1. PROJECT OVERVIEW ===== -->
+<h2 id="s1"><span class="sn">1</span> Project Overview</h2>
+
+<table class="ov">
+  <tr><td>Project</td><td>KLIPS — Publisher & Admin Portal</td></tr>
+  <tr><td>Client</td><td>KLIPS (Alexander Deris, advisory by Uplead Digital)</td></tr>
+  <tr><td>Platform</td><td>JWX (JW Player) — video CMS, CDN, player, ads, DRM, analytics</td></tr>
+  <tr><td>Scope</td><td>Tiered publisher content discovery portal + admin management layer built on JWX APIs</td></tr>
+  <tr><td>Scale</td><td>4 broadcasters &middot; 200+ publishers &middot; ~10K videos at launch &middot; 3–5K new clips/month</td></tr>
+  <tr><td>Duration</td><td>~8 weeks from Project Start Date</td></tr>
+</table>
+
+<h3>Your TulipTech Team</h3>
+<table>
+  <thead><tr><th>Role</th><th>Name</th><th>Your Point of Contact For</th></tr></thead>
+  <tbody>
+    <tr><td>Project Manager</td><td>Kallal Das</td><td>Day-to-day delivery, weekly updates, sprint demos, UAT coordination</td></tr>
+    <tr><td>Delivery Lead</td><td>Joy Islam</td><td>Escalations, commercial decisions, governance</td></tr>
+    <tr><td>Global Program Manager</td><td>Rakib Khan</td><td>Program-level oversight, cross-project governance</td></tr>
+    <tr><td>Development Team</td><td>Tanvir Ahmed, Moinul</td><td>Technical queries during demos and UAT</td></tr>
+    <tr><td>QA Engineer</td><td>Katib</td><td>Testing status, defect reports, UAT support</td></tr>
+    <tr><td>DevOps Engineer</td><td>Dhaval</td><td>Environment access, deployment status</td></tr>
+    <tr><td>UI/UX Designer</td><td>Kripa</td><td>Design reviews, wireframe feedback</td></tr>
+  </tbody>
+</table>
+
+<!-- ===== 2. DELIVERY PHASES ===== -->
+<h2 id="s2"><span class="sn">2</span> Delivery Phases</h2>
+<p>The build is structured in 7 phases across 8 weeks. Each phase has clear deliverables and exit criteria before progressing.</p>
+
+<div class="phase-card">
+  <div class="phase-top"><span class="pn">PHASE 0</span><span class="pt">Pre-Build Prerequisites</span><span class="pw">Before Week 1</span></div>
+  <div class="phase-body">
+    <p>These must be completed before development begins.</p>
+    <div class="phase-deliverables">
+      <div class="phase-del"><span class="check">&#10003;</span> SoW-001 signed and executed</div>
+      <div class="phase-del"><span class="check">&#10003;</span> JWX SaaS agreement executed</div>
+      <div class="phase-del"><span class="check">&#10003;</span> JWX API sandbox credentials provisioned</div>
+      <div class="phase-del"><span class="check">&#10003;</span> Publisher tier structure confirmed</div>
+      <div class="phase-del"><span class="check">&#10003;</span> Publisher and domain list provided (200+)</div>
+    </div>
+  </div>
+</div>
+
+<div class="phase-card">
+  <div class="phase-top"><span class="pn">PHASE 1</span><span class="pt">Discovery & Setup</span><span class="pw">Week 1</span></div>
+  <div class="phase-body">
+    <p>Kickoff, API exploration, environment provisioning, and design begins.</p>
+    <div class="phase-deliverables">
+      <div class="phase-del"><span class="check">&#10003;</span> RACI matrix and governance schedule</div>
+      <div class="phase-del"><span class="check">&#10003;</span> JWX API integration design document</div>
+      <div class="phase-del"><span class="check">&#10003;</span> Working staging environment with CI/CD</div>
+      <div class="phase-del"><span class="check">&#10003;</span> Publisher portal wireframes (Figma)</div>
+      <div class="phase-del"><span class="check">&#10003;</span> Prioritized product backlog</div>
+      <div class="phase-del"><span class="check">&#10003;</span> QA test plan</div>
+    </div>
+    <div class="phase-exit"><strong>Exit:</strong> Staging live, API verified, backlog ready, design in progress.</div>
+  </div>
+</div>
+
+<div class="phase-card">
+  <div class="phase-top"><span class="pn">PHASE 2</span><span class="pt">Publisher Portal</span><span class="pw">Weeks 2–3</span></div>
+  <div class="phase-body">
+    <p>Core publisher-facing features — login, content discovery, and embed retrieval.</p>
+    <div class="phase-deliverables">
+      <div class="phase-del"><span class="check">&#10003;</span> Secure authentication (login, invite, password reset) for 200+ publishers</div>
+      <div class="phase-del"><span class="check">&#10003;</span> Tiered content discovery with filters (broadcaster, type, recency, search)</div>
+      <div class="phase-del"><span class="check">&#10003;</span> Embed code retrieval with preview (single clips and playlists)</div>
+    </div>
+    <div class="phase-exit"><strong>Exit:</strong> Publishers can log in, browse tiered content, and copy embed codes on staging. <strong>Demo to client.</strong></div>
+  </div>
+</div>
+
+<div class="phase-card">
+  <div class="phase-top"><span class="pn">PHASE 3</span><span class="pt">Admin Portal & Integration</span><span class="pw">Weeks 4–5</span></div>
+  <div class="phase-body">
+    <p>Administration layer — publisher management, access control, and domain security.</p>
+    <div class="phase-deliverables">
+      <div class="phase-del"><span class="check">&#10003;</span> Publisher and tier management (create, edit, assign, bulk operations)</div>
+      <div class="phase-del"><span class="check">&#10003;</span> Role-based access control (super admin, broadcaster, publisher)</div>
+      <div class="phase-del"><span class="check">&#10003;</span> Domain whitelisting — embeds restricted to registered domains only</div>
+      <div class="phase-del"><span class="check">&#10003;</span> JWX API integration layer (caching, rate limiting, error handling)</div>
+    </div>
+    <div class="phase-exit"><strong>Exit:</strong> Admin can manage publishers, assign tiers, whitelist domains. RBAC enforced. <strong>Demo to client.</strong></div>
+  </div>
+</div>
+
+<div class="phase-card">
+  <div class="phase-top"><span class="pn">PHASE 4</span><span class="pt">Broadcaster Reporting & Polish</span><span class="pw">Week 6</span></div>
+  <div class="phase-body">
+    <p>Broadcaster-facing analytics and overall quality improvements.</p>
+    <div class="phase-deliverables">
+      <div class="phase-del"><span class="check">&#10003;</span> Broadcaster reporting view — per-publisher consumption (each broadcaster sees only their data)</div>
+      <div class="phase-del"><span class="check">&#10003;</span> Bug fixes from QA testing</div>
+      <div class="phase-del"><span class="check">&#10003;</span> UI polish, responsive design, edge case handling</div>
+    </div>
+    <div class="phase-exit"><strong>Exit:</strong> All three portals fully functional. No critical defects. Production environment ready.</div>
+  </div>
+</div>
+
+<div class="phase-card">
+  <div class="phase-top"><span class="pn">PHASE 5</span><span class="pt">Quality Assurance & UAT</span><span class="pw">Week 7</span></div>
+  <div class="phase-body">
+    <p>Comprehensive testing followed by your team's walkthrough and acceptance.</p>
+    <div class="phase-deliverables">
+      <div class="phase-del"><span class="check">&#10003;</span> End-to-end functional testing across all portals</div>
+      <div class="phase-del"><span class="check">&#10003;</span> Tier access verification (3 tiers &times; 4 broadcasters)</div>
+      <div class="phase-del"><span class="check">&#10003;</span> Domain whitelisting enforcement testing</div>
+      <div class="phase-del"><span class="check">&#10003;</span> Cross-browser and performance testing</div>
+      <div class="phase-del"><span class="check">&#10003;</span> <strong>Client UAT walkthrough with your team</strong></div>
+    </div>
+    <div class="phase-exit"><strong>Exit:</strong> No Sev-1 or Sev-2 defects. Core journeys demonstrable. <strong>Client sign-off.</strong></div>
+  </div>
+</div>
+
+<div class="phase-card">
+  <div class="phase-top"><span class="pn">PHASE 6</span><span class="pt">Migration, Training & Go-Live</span><span class="pw">Week 8</span></div>
+  <div class="phase-body">
+    <p>Phased publisher migration, team training, and production launch.</p>
+    <div class="phase-deliverables">
+      <div class="phase-del"><span class="check">&#10003;</span> Publisher migration in 3 batches (Premium &rarr; Preferred &rarr; Open Exchange)</div>
+      <div class="phase-del"><span class="check">&#10003;</span> Domain registration for all migrated publishers</div>
+      <div class="phase-del"><span class="check">&#10003;</span> Admin team training with recorded sessions and playbooks</div>
+      <div class="phase-del"><span class="check">&#10003;</span> Publisher onboarding materials (walkthrough guide, video tutorial, FAQ)</div>
+      <div class="phase-del"><span class="check">&#10003;</span> Production go-live with 48-hour monitoring</div>
+    </div>
+    <div class="phase-exit"><strong>Exit:</strong> 200 publishers migrated, admin team trained, production live, monitoring in place.</div>
+  </div>
+</div>
+
+<!-- ===== 3. TIMELINE ===== -->
+<h2 id="s3"><span class="sn">3</span> Timeline</h2>
+<p>All weeks are relative to the Project Start Date (SoW signed + JWX API access provisioned).</p>
+
+<div class="gantt">
+  <div class="gantt-head">
+    <div>Phase</div><div>Wk 1</div><div>Wk 2</div><div>Wk 3</div><div>Wk 4</div><div>Wk 5</div><div>Wk 6</div><div>Wk 7</div><div>Wk 8</div>
+  </div>
+  <div class="gantt-row">
+    <div class="gantt-label">Discovery & Setup</div>
+    <div class="gantt-cell"><div class="gantt-bar gb-disc">Discovery</div></div>
+    <div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div>
+  </div>
+  <div class="gantt-row">
+    <div class="gantt-label">Publisher Portal</div>
+    <div class="gantt-cell"></div>
+    <div class="gantt-cell"><div class="gantt-bar gb-pub">Build</div></div>
+    <div class="gantt-cell"><div class="gantt-bar gb-pub">Build</div></div>
+    <div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div>
+  </div>
+  <div class="gantt-row">
+    <div class="gantt-label">Admin Portal</div>
+    <div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div>
+    <div class="gantt-cell"><div class="gantt-bar gb-admin">Build</div></div>
+    <div class="gantt-cell"><div class="gantt-bar gb-admin">Build</div></div>
+    <div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div>
+  </div>
+  <div class="gantt-row">
+    <div class="gantt-label">Reporting & Polish</div>
+    <div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div>
+    <div class="gantt-cell"><div class="gantt-bar gb-report">Report</div></div>
+    <div class="gantt-cell"></div><div class="gantt-cell"></div>
+  </div>
+  <div class="gantt-row">
+    <div class="gantt-label">QA & UAT</div>
+    <div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div>
+    <div class="gantt-cell"><div class="gantt-bar gb-qa">QA + UAT</div></div>
+    <div class="gantt-cell"></div>
+  </div>
+  <div class="gantt-row">
+    <div class="gantt-label">Migration & Go-Live</div>
+    <div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div>
+    <div class="gantt-cell"><div class="gantt-bar gb-live">Go-Live</div></div>
+  </div>
+  <div class="gantt-row" style="background:var(--navy-50)">
+    <div class="gantt-label" style="font-size:11px;color:var(--text-3)">Design (parallel)</div>
+    <div class="gantt-cell"><div class="gantt-bar" style="background:var(--navy-100);color:var(--navy-700)">UX</div></div>
+    <div class="gantt-cell"><div class="gantt-bar" style="background:var(--navy-100);color:var(--navy-700)">UX</div></div>
+    <div class="gantt-cell"><div class="gantt-bar" style="background:var(--navy-100);color:var(--navy-700)">UX</div></div>
+    <div class="gantt-cell"><div class="gantt-bar" style="background:var(--navy-100);color:var(--navy-700)">UX</div></div>
+    <div class="gantt-cell"><div class="gantt-bar" style="background:var(--navy-100);color:var(--navy-700)">UX</div></div>
+    <div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div>
+  </div>
+  <div class="gantt-row" style="background:var(--navy-50)">
+    <div class="gantt-label" style="font-size:11px;color:var(--text-3)">QA Testing (parallel)</div>
+    <div class="gantt-cell"></div><div class="gantt-cell"></div>
+    <div class="gantt-cell"><div class="gantt-bar" style="background:var(--navy-100);color:var(--navy-700)">QA</div></div>
+    <div class="gantt-cell"><div class="gantt-bar" style="background:var(--navy-100);color:var(--navy-700)">QA</div></div>
+    <div class="gantt-cell"><div class="gantt-bar" style="background:var(--navy-100);color:var(--navy-700)">QA</div></div>
+    <div class="gantt-cell"><div class="gantt-bar" style="background:var(--navy-100);color:var(--navy-700)">QA</div></div>
+    <div class="gantt-cell"></div><div class="gantt-cell"></div>
+  </div>
+  <div class="gantt-row" style="min-height:36px;background:var(--cyan-50)">
+    <div class="gantt-label" style="font-size:11px;color:var(--cyan-dark);font-weight:700">Client Demos</div>
+    <div class="gantt-cell"></div><div class="gantt-cell"></div>
+    <div class="gantt-cell"><div class="gantt-milestone"></div></div>
+    <div class="gantt-cell"></div>
+    <div class="gantt-cell"><div class="gantt-milestone"></div></div>
+    <div class="gantt-cell"></div>
+    <div class="gantt-cell"><div class="gantt-milestone"></div></div>
+    <div class="gantt-cell"></div>
+  </div>
+</div>
+
+<!-- ===== 4. MILESTONES ===== -->
+<h2 id="s4"><span class="sn">4</span> Milestones</h2>
+
+<div class="ms-timeline">
+  <div class="ms-item done"><div class="ms-wk">Week 0</div><div class="ms-dot"></div><div class="ms-name">Project Start</div><div class="ms-desc">SoW signed<br>JWX access</div></div>
+  <div class="ms-item"><div class="ms-wk">Week 1</div><div class="ms-dot"></div><div class="ms-name">Env Ready</div><div class="ms-desc">Staging live<br>Backlog ready</div></div>
+  <div class="ms-item"><div class="ms-wk">Week 3</div><div class="ms-dot"></div><div class="ms-name">Publisher MVP</div><div class="ms-desc">Login + discover<br>+ embed on staging</div></div>
+  <div class="ms-item"><div class="ms-wk">Week 5</div><div class="ms-dot"></div><div class="ms-name">Admin Complete</div><div class="ms-desc">RBAC + domains<br>+ publisher mgmt</div></div>
+  <div class="ms-item"><div class="ms-wk">Week 6</div><div class="ms-dot"></div><div class="ms-name">Feature Complete</div><div class="ms-desc">All features<br>incl. reporting</div></div>
+  <div class="ms-item"><div class="ms-wk">Week 7</div><div class="ms-dot"></div><div class="ms-name">UAT Sign-off</div><div class="ms-desc">No Sev-1/2<br>Client accepted</div></div>
+  <div class="ms-item"><div class="ms-wk">Week 8</div><div class="ms-dot"></div><div class="ms-name">Go-Live</div><div class="ms-desc">200 publishers<br>Production live</div></div>
+</div>
+
+<div class="callout c-info"><span class="ci">&#10148;</span><span><strong>Critical path:</strong> JWX API access &rarr; content discovery &rarr; embed retrieval &rarr; RBAC &rarr; domain whitelisting &rarr; QA &rarr; UAT &rarr; migration &rarr; go-live. Any delay in JWX API provisioning directly delays the entire timeline.</span></div>
+
+<!-- ===== 5. HOW WE WORK ===== -->
+<h2 id="s5"><span class="sn">5</span> How We Work</h2>
+
+<div class="hw-grid">
+  <div class="hw-card">
+    <div class="hw-ico">&#9881;</div>
+    <h4>Weekly Sprints</h4>
+    <p>1-week sprints with planning on Monday and continuous delivery. Short cycles mean faster feedback and course correction.</p>
+  </div>
+  <div class="hw-card">
+    <div class="hw-ico">&#9654;</div>
+    <h4>Biweekly Demos</h4>
+    <p>Live demos of working features every 2 weeks (Weeks 3, 5, 7). You see real progress, not slides.</p>
+  </div>
+  <div class="hw-card">
+    <div class="hw-ico">&#128274;</div>
+    <h4>Quality Gates</h4>
+    <p>Every feature passes code review, automated tests, and QA before reaching staging. No shortcuts to production.</p>
+  </div>
+  <div class="hw-card">
+    <div class="hw-ico">&#128640;</div>
+    <h4>Staging First</h4>
+    <p>All features deploy to a staging environment that mirrors production. You test on staging before anything goes live.</p>
+  </div>
+  <div class="hw-card">
+    <div class="hw-ico">&#128737;</div>
+    <h4>Phased Migration</h4>
+    <p>Publishers migrate in 3 batches (Premium &rarr; Preferred &rarr; Open). Existing embeds keep working during transition.</p>
+  </div>
+  <div class="hw-card">
+    <div class="hw-ico">&#9888;</div>
+    <h4>Post-Launch Warranty</h4>
+    <p>4-week warranty after go-live covers defect resolution at no extra cost. Ongoing support under SoW-002.</p>
+  </div>
+</div>
+
+<h3>Quality & Testing Approach</h3>
+<table>
+  <thead><tr><th>Test Type</th><th>When</th><th>What It Covers</th></tr></thead>
+  <tbody>
+    <tr><td>Automated Testing</td><td>Every code change</td><td>Unit tests, integration tests, security scans run automatically</td></tr>
+    <tr><td>Functional Testing</td><td>After each feature</td><td>Manual testing against documented test cases by dedicated QA</td></tr>
+    <tr><td>Regression Testing</td><td>Before each demo</td><td>Full suite to ensure no existing features are broken</td></tr>
+    <tr><td>Cross-Browser</td><td>Week 7</td><td>Chrome, Firefox, Safari, and Edge compatibility</td></tr>
+    <tr><td>Performance</td><td>Week 7</td><td>Load testing with 200+ concurrent publisher sessions</td></tr>
+    <tr><td>User Acceptance (UAT)</td><td>Week 7</td><td>Your team walks through all core journeys on staging</td></tr>
+  </tbody>
+</table>
+
+<!-- ===== 6. DEPENDENCIES & RISKS ===== -->
+<h2 id="s6"><span class="sn">6</span> Dependencies & Risks</h2>
+
+<table>
+  <thead><tr><th>#</th><th>Type</th><th>Item</th><th>Impact</th><th>Mitigation</th></tr></thead>
+  <tbody>
+    <tr class="rsk-d"><td>D1</td><td>Dependency</td><td>JWX API credentials not provisioned</td><td>Blocks entire build</td><td>JWX agreement must be executed before Phase 1</td></tr>
+    <tr class="rsk-d"><td>D2</td><td>Dependency</td><td>Tier structure not finalized</td><td>Blocks content filtering</td><td>Confirm during Phase 0; placeholder tiers if delayed</td></tr>
+    <tr class="rsk-d"><td>D3</td><td>Dependency</td><td>Publisher and domain list not provided</td><td>Blocks migration</td><td>Provide during Phase 0; partial list acceptable to start</td></tr>
+    <tr class="rsk-d"><td>D4</td><td>Dependency</td><td>Client UAT availability</td><td>Delays go-live</td><td>Schedule UAT in advance; deemed acceptance after 10 business days</td></tr>
+    <tr class="rsk-r"><td>R1</td><td>Risk</td><td>Scope changes during build</td><td>Timeline slippage</td><td>Strict change control per SoW-001 &sect;12</td></tr>
+    <tr class="rsk-r"><td>R2</td><td>Risk</td><td>Inconsistent JWX content tagging</td><td>Incorrect tier filtering</td><td>Validate tagging model in Phase 1 with broadcaster content</td></tr>
+  </tbody>
+</table>
+
+<!-- ===== 7. GOVERNANCE & RACI ===== -->
+<h2 id="s7"><span class="sn">7</span> Governance & RACI</h2>
+
+<table class="ov">
+  <tr><td>Weekly Status</td><td>Every Monday, 30 min — Kallal + Alex (Joy and Loretta as needed)</td></tr>
+  <tr><td>Sprint Demos</td><td>Biweekly — end of Weeks 3, 5, and 7</td></tr>
+  <tr><td>Escalation</td><td>Kallal Das &rarr; Joy Islam &rarr; Rakib Khan</td></tr>
+  <tr><td>Communication</td><td>Microsoft Teams (day-to-day) &middot; Email (formal decisions)</td></tr>
+  <tr><td>Status Reports</td><td>Weekly Friday email from Kallal</td></tr>
+  <tr><td>Change Requests</td><td>Written and signed per SoW-001 &sect;12</td></tr>
+</table>
+
+<h3>RACI — Key Activities</h3>
+<p><strong>R</strong> = Responsible &nbsp;&nbsp; <strong>A</strong> = Accountable &nbsp;&nbsp; <strong>C</strong> = Consulted &nbsp;&nbsp; <strong>I</strong> = Informed</p>
+<table class="raci">
+  <thead><tr><th style="text-align:left;min-width:160px">Activity</th><th>Alex<br><span style="font-weight:400;opacity:.6">Client</span></th><th>Kallal<br><span style="font-weight:400;opacity:.6">PM</span></th><th>Joy<br><span style="font-weight:400;opacity:.6">Delivery</span></th><th>TulipTech<br><span style="font-weight:400;opacity:.6">Dev Team</span></th></tr></thead>
+  <tbody>
+    <tr><td>Scope and feature decisions</td><td class="ra">A</td><td class="rc">C</td><td class="ra">A</td><td class="ri">I</td></tr>
+    <tr><td>Tier structure and publisher list</td><td class="rr">R</td><td class="ri">I</td><td class="ri">I</td><td class="ri">I</td></tr>
+    <tr><td>Sprint planning and execution</td><td class="rc">C</td><td class="rr">R</td><td class="ri">I</td><td class="rr">R</td></tr>
+    <tr><td>Design review and feedback</td><td class="rc">C</td><td class="rr">R</td><td class="ri">I</td><td class="rr">R</td></tr>
+    <tr><td>Development and testing</td><td class="ri">I</td><td class="ri">I</td><td class="ri">I</td><td class="rr">R</td></tr>
+    <tr><td>Sprint demo attendance</td><td class="rr">R</td><td class="rr">R</td><td class="rc">C</td><td class="rr">R</td></tr>
+    <tr><td>UAT walkthrough and sign-off</td><td class="ra">A</td><td class="rr">R</td><td class="ri">I</td><td class="rc">C</td></tr>
+    <tr><td>Publisher migration data</td><td class="rr">R</td><td class="rc">C</td><td class="ri">I</td><td class="rr">R</td></tr>
+    <tr><td>Go-live decision</td><td class="ra">A</td><td class="rc">C</td><td class="ra">A</td><td class="rr">R</td></tr>
+    <tr><td>Escalations</td><td class="ri">I</td><td class="rr">R</td><td class="ra">A</td><td class="ri">I</td></tr>
+  </tbody>
+</table>
+
+<!-- ===== 8. WHAT WE NEED FROM YOU ===== -->
+<h2 id="s8"><span class="sn">8</span> What We Need From You</h2>
+<p>To hit the 8-week timeline, we need the following from your side:</p>
+
+<table>
+  <thead><tr><th>When</th><th>What</th><th>Who</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Before Week 1</strong></td><td>Sign SoW-001 and execute JWX SaaS agreement</td><td>Alex + Loretta</td></tr>
+    <tr><td><strong>Before Week 1</strong></td><td>Provision JWX API sandbox credentials</td><td>Alex + JWX</td></tr>
+    <tr><td><strong>Before Week 1</strong></td><td>Confirm tier structure (Premium / Preferred / Open Exchange)</td><td>Alex</td></tr>
+    <tr><td><strong>By Week 4</strong></td><td>Provide publisher list with domains (200+)</td><td>Alex</td></tr>
+    <tr><td><strong>Week 3, 5, 7</strong></td><td>Attend sprint demos (30–45 min each)</td><td>Alex + team</td></tr>
+    <tr><td><strong>Week 7</strong></td><td>Complete UAT walkthrough and provide sign-off</td><td>Alex</td></tr>
+    <tr><td><strong>Week 8</strong></td><td>Attend training session and confirm go-live readiness</td><td>Alex + production team</td></tr>
+  </tbody>
+</table>
+
+<div class="callout c-warn"><span class="ci">&#9888;</span><span><strong>Key dependency:</strong> JWX API access is on the critical path. Every week of delay in provisioning API credentials adds a week to the go-live date.</span></div>
+
+<!-- ===== FOOTER ===== -->
+<div class="footer">
+  <div class="ft-l">
+    <div class="ft-logo">T</div>
+    <div><div class="ft-t" style="font-weight:600;color:var(--navy)">TulipTech Ltd</div><div class="ft-t">Confidential — prepared for KLIPS</div></div>
+  </div>
+  <div class="ft-r">October 2026 &middot; Version 1.0<br>www.tulip-tech.com</div>
+</div>
+
+</div>
+</body>
+</html>
